@@ -5,7 +5,7 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { CommonService, Toast } from "../providers/common.service";
-import "rxjs/add/operator/map";
+import "rxjs";
 import { Observable } from "rxjs";
 import { JwtService, ResponseModel } from "src/providers/jwtService";
 import { environment } from "src/environments/environment";
