@@ -5,7 +5,6 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { CommonService, Toast } from "../providers/common.service";
-import "rxjs";
 import { Observable } from "rxjs";
 import { JwtService, ResponseModel } from "src/providers/jwtService";
 import { environment } from "src/environments/environment";
@@ -181,16 +180,17 @@ export class AjaxService {
           .subscribe(
             (res: HttpResponse<any>) => {
               try {
-                if (this.tokenHelper.IsValidResponse(res.body)) {
-                  let loginData: ResponseModel = res.body;
-                  if (this.tokenHelper.setLoginDetail(loginData.ResponseBody)) {
-                    resolve(res.body);
-                  } else {
-                    resolve(res.body);
-                  }
-                } else {
-                  reject(null);
-                }
+                // if (this.tokenHelper.IsValidResponse(res.body)) {
+                //   let loginData: ResponseModel = res.body;
+                //   if (this.tokenHelper.setLoginDetail(loginData.ResponseBody)) {
+                //     resolve(res.body);
+                //   } else {
+                //     resolve(res.body);
+                //   }
+                // } else {
+                //   reject(null);
+                // }
+                resolve(res.body);
               } catch (e) {
                 reject(e);
               }

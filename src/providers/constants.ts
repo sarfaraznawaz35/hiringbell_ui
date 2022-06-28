@@ -1,4 +1,5 @@
 export const Login = "login";
+export const Registration = "Registration";
 export const Users = "users";
 export const Sales = "sales";
 export const Setting = "setting";
@@ -89,6 +90,7 @@ export const Expenses = 'admin/expenses';
 // ********************** Admin route pages  *******************
 
 export const UserDashboard = "user/dashboard";
+
 export const UserAttendance = "user/attendance";
 export const UserProfilePage = "user/profile";
 export const UserTimesheet = "user/timesheet";
