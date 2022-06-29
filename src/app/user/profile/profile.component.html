@@ -1,0 +1,80 @@
+<div class="d-flex align-items-start">
+  <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
+    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
+    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
+    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+  </div>
+  <div class="tab-content" id="v-pills-tabContent">
+    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+      <div class="row p-2">
+        <form class="row g-3" [formGroup]="profileForm">
+          <div class="row col-md-12">
+            <div class="row col-md-3 d-flex align-items-center justify-content-center">
+              <i class="profilecamera fa fa-camera text-primary" aria-hidden="true"></i>  
+              <img src="assets/images/profile.jpeg" alt="hugenerd" class="profileimage  rounded-circle img-fluid">  
+            </div>
+            <div class="row col-md-9">
+             
+              <div>
+                  <button type="button" (click)="updateProfile()" class="btn btn-outline-success float-end ">Save</button>
+              </div>
+              <div class="col-md-6">
+                  <label for="inputFirstName" class="form-label fs-6 ">First Name*</label>
+                  <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
+                </div>
+                <div class="col-md-6">
+                  <label for="inputLasttName" class="form-label fs-6">Last Name*</label>
+                  <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
+                </div>
+              <div class="col-md-6 mt-2">
+                <label for="inputMobileNumber" class="form-label fs-6">Mobile Number</label>
+                <input type="number" class="form-control" id="inputZip" formControlName="mobileNumber">
+              </div>
+              <div class="col-md-6 mt-2">
+                  <label for="inputEmail4" class="form-label fs-6">Email</label>
+                  <input type="email" class="form-control fs-6" id="inputEmail4" formControlName="email">
+                </div>
+                <div class="col-md-6 mt-2">
+                  <label for="inputLasttName" class="form-label fs-6" >Company Name</label>
+                  <input type="text" class="form-control" id="inputLastName" placeholder="Company Name" formControlName="companyName">
+                </div>
+            </div>
+          </div>
+          <div class="card py-3 mt-4"> 
+            <h6 class="text-dark">Attach Resume</h6>
+            <p>Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes</p>
+            <div class="col-12 mt-3 p-4 card py-5">
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary-c btn-sm " text >UPLOAD RESUME</button>
+              </div>
+              <p class="text-center">Supported Formats doc, docx, pdf upto 200 kb</p>
+            </div>
+      
+              <div class="x-panel my-4 d-flex align-items-center justify-content-between custom-backgrnd-color" >
+                  <div class="d-flex align-items-center justify-content-center py-3 ">
+                    <i class="fa fa-folder text-warning f-zoom pe-3" aria-hidden="true"></i>
+                    <div >
+                      <h6>Don't have a resume yet?</h6>
+                      <p class="mb-0">Create a job-winning resume with our simple resume builder</p>
+                    </div>
+                  </div>
+                  <s href="javascript:void(0)" class="text-decoration-none text-primary fw-bold pe-3 ">CREATE FREE RESUME</s>
+              </div>
+      
+          </div>
+        </form>
+      </div>
+
+
+    </div>
+    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+  </div>
+</div>
+
+
+
+

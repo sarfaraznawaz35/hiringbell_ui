@@ -42,7 +42,7 @@ export class JwtService {
 
     IsValidResponse(response: ResponseModel) {
       if (response !== null)
-          return this.HandleResponseStatus(response.HttpStatusCode);
+          return this.HandleResponseStatus(response.httpStatusCode);
       else
           return false;
     }
@@ -78,10 +78,10 @@ export class JwtService {
 }
 
 export interface ResponseModel {
-    AuthenticationToken: string;
-    HttpStatusCode: number;
-    HttpStatusMessage: string;
-    ResponseBody: any;
+    authenticationToken: string;
+    httpStatusCode: number;
+    httpStatusMessage: string;
+    responseBody: any;
 }
 
 export class LoginResponse {

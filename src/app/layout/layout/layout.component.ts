@@ -1,24 +1,23 @@
-import { Component } from '@angular/core';
-import {
-  Router,
-  Event,
-  NavigationStart,
-} from "@angular/router";
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { NavigationStart, Router, Event } from '@angular/router';
 import { CommonService } from 'src/providers/common.service';
+import { Login } from 'src/providers/constants';
 import { iNavigation } from 'src/providers/iNavigation';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-
-export class AppComponent {
-  title = 'hiringbell-ui';
+export class LayoutComponent implements OnInit {
+  title = "star-admin-angular";
+  enableAuth: boolean = false;
   pageName: string = "";
   activePage:number = 0;
-  navRouter: Subscription = null;
+
+  displayActivePage(activePageNumber:number){
+    this.activePage = activePageNumber
+  }
 
   constructor(
     private router: Router,
@@ -26,14 +25,33 @@ export class AppComponent {
     private nav: iNavigation,
   ) {
     this.GetScreenHeight();
-    this.navRouter = this.router.events.subscribe((event: Event) => {
+    this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         this.pageName = event.url.replace("/", "")
-        this.commonService.SetCurrentPageName(this.pageName);
         this.nav.manageLocalSessionKey(this.pageName);
-        this.nav.pushRoute(this.pageName);
+        switch (event.url) {
+          case "/login":
+            this.enableAuth = true;
+            break;
+          default:
+            this.enableAuth = false;
+            break;
+        }
       }
     });
+  }
+
+  doAuthentication() {
+    this.enableAuth = true;
+    this.nav.navigate(Login, null);
+  }
+
+  ngOnInit() {
+    this.enableAuth = false;
+  }
+
+  RemovePopup() {
+    document.getElementById("sessionexpiredBox").classList.add('d-none');
   }
 
   GetScreenHeight() {
