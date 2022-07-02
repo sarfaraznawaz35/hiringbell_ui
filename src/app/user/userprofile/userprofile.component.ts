@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+// import * as $ from 'JQuery';
+declare var $: any;
 
 @Component({
   selector: 'app-userprofile',
@@ -10,6 +12,10 @@ export class UserprofileComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  employementPopup() {
+    $('#addEmployment').modal('show');
   }
 
 }

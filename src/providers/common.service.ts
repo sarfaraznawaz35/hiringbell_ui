@@ -1,6 +1,6 @@
 import { Home } from "./constants";
 import { Injectable, ElementRef } from "@angular/core";
-import * as $ from 'jquery';
+declare var $: any;
 
 const AllowedKey = [8, 9, 46];
 @Injectable({
