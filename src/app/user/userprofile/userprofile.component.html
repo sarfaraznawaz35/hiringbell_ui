@@ -130,7 +130,7 @@
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Employment </h5>
-                    <a href="javascript:void(0)" (click)="employementPopup()" class="addemployment text-decoration-none text-primary-c">ADD EMPLOYMENT</a>
+                    <a href="javascript:void(0)" (click)="employementPopup(content)" class="addemployment text-decoration-none text-primary-c">ADD EMPLOYMENT</a>
                 </div>
                 <p class="mb-0">Employment Detail</p>
             </div>
@@ -310,20 +310,23 @@
 </div>
 
 <!-- Modal :- Add Employment-->
-<div class="modal fade" id="addEmployment" tabindex="-1" aria-labelledby="addEmploymentLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addEmploymentLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-  </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="dateOfBirth">Date of birth</label>
+          <div class="input-group">
+            <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>
