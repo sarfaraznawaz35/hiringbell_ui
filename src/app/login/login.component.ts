@@ -80,6 +80,8 @@ export class LoginComponent implements OnInit {
             console.log(Data);
             Toast("Please wait loading dashboard ...");
             this.nav.navigate(UserProfilePage, Data);
+      
+
             
             // if(this.userType == 'employee')
              

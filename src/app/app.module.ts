@@ -13,7 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from './registration/registration.component';
-import { LayoutModule } from './layout/layout.module'
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
   declarations: [
@@ -35,8 +35,7 @@ import { LayoutModule } from './layout/layout.module'
     CommonService,
     AjaxService,
     iNavigation,
-    JwtService,
-    
+    JwtService
   ],
   bootstrap: [AppComponent]
 })

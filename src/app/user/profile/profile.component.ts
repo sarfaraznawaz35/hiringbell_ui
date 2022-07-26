@@ -43,8 +43,6 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  
-
   initForm() {
     this.profileForm=this.fb.group({
       firstName: new FormControl(this.profileData.firstName),

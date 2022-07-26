@@ -56,14 +56,14 @@
                 <hr class="p-0 my-2">
                 <p class="d-flex justify-content-between">
                     <a href="javascript:void(0)" class="text-decoration-none text-dark"> Resume</a>
-                    <a href="javascript:void(0)" class="quickresumeupdate text-decoration-none text-primary-c">UPDATE</a>
+                    <a href="javascript:void(0)"
+                        class="quickresumeupdate text-decoration-none text-primary-c">UPDATE</a>
                 </p>
                 <p><a href="javascript:void(0)" class="text-decoration-none text-dark">Key Skills</a></p>
                 <p class="d-flex justify-content-between">
                     <a href="javascript:void(0)" class="text-decoration-none text-dark">Employment</a>
                     <a href="javascript:void(0)" class="quickadd text-decoration-none text-primary-c">ADD</a>
                 </p>
-
                 <p class="d-flex justify-content-between">
                     <a href="javascript:void(0)" class="text-decoration-none text-dark">Education</a>
                     <a href="javascript:void(0)" class="quickadd text-decoration-none text-primary-c">ADD</a>
@@ -73,7 +73,6 @@
                     <a href="javascript:void(0)" class="text-decoration-none text-dark">Projects</a>
                     <a href="javascript:void(0)" class="quickadd text-decoration-none text-primary-c">ADD</a>
                 </p>
-
                 <p><a href="javascript:void(0)" class="text-decoration-none text-dark">Profile Summary</a></p>
                 <p><a href="javascript:void(0)" class="text-decoration-none text-dark">Accomplishments</a></p>
                 <p><a href="javascript:void(0)" class="text-decoration-none text-dark">Career Profile</a></p>
@@ -84,7 +83,8 @@
         <div class=" col-md-9 p-0 m-0">
             <div class="col-md-12 py-3 card shadow-lg mt-4">
                 <h5 class="text-dark ps-3">Resume</h5>
-                <p class="ps-3 mb-0">Resume is the most important document recruiters look for. Recruiters generally do not look at
+                <p class="ps-3 mb-0">Resume is the most important document recruiters look for. Recruiters generally do
+                    not look at
                     profiles without resumes </p>
                 <!-- <div class="">
                     <div class="d-flex justify-content-end pe-5">
@@ -103,15 +103,17 @@
                     </div>
                     <p class="text-center">Supported Formats doc, docx, rtf, pdf upto 2 MB</p>
                 </div>
-                <div class="x-panel mx-4 mt-3 p-4 py-4 d-flex align-items-center justify-content-between custom-backgrnd-color" >
+                <div
+                    class="x-panel mx-4 mt-3 p-4 py-4 d-flex align-items-center justify-content-between custom-backgrnd-color">
                     <div class="d-flex align-items-center justify-content-center py-3 ">
-                      <i class="Dont-have-resume fa fa-folder text-warning f-zoom pe-3" aria-hidden="true"></i>
-                      <div >
-                        <h6>Don't have a resume yet?</h6>
-                        <p class="mb-0">Create a job-winning resume with our simple resume builder</p>
-                      </div>
+                        <i class="Dont-have-resume fa fa-folder text-warning f-zoom pe-3" aria-hidden="true"></i>
+                        <div>
+                            <h6>Don't have a resume yet?</h6>
+                            <p class="mb-0">Create a job-winning resume with our simple resume builder</p>
+                        </div>
                     </div>
-                    <a href="javascript:void(0)" class="createfreeresume text-decoration-none text-primary-c pe-3 ">CREATE FREE RESUME</a>
+                    <a href="javascript:void(0)"
+                        class="createfreeresume text-decoration-none text-primary-c pe-3 ">CREATE FREE RESUME</a>
                 </div>
             </div>
 
@@ -130,21 +132,26 @@
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Employment </h5>
-                    <a href="javascript:void(0)" (click)="employementPopup(content)" class="addemployment text-decoration-none text-primary-c">ADD EMPLOYMENT</a>
+                    <a href="javascript:void(0)" (click)="employementPopup(addEmploymentModal)"
+                        class="addemployment text-decoration-none text-primary-c">ADD EMPLOYMENT</a>
                 </div>
                 <p class="mb-0">Employment Detail</p>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Education </h5>
-                    <a href="javascript:void(0)" class="addeducation text-decoration-none text-primary-c">ADD EDUCATION</a>
+                    <a href="javascript:void(0)" (click)="educationPopup(addEducationModal)"
+                        class="addeducation text-decoration-none text-primary-c">ADD
+                        EDUCATION</a>
                 </div>
                 <p class="mb-0">Educational Detail</p>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">IT Skills </h5>
-                    <a href="javascript:void(0)" class="additskills text-decoration-none text-primary-c">ADD IT SKILLS </a>
+                    <a href="javascript:void(0)" (click)="itSkillsPopup(addItSkillsModal)"
+                        class="additskills text-decoration-none text-primary-c">ADD IT SKILLS
+                    </a>
                 </div>
                 <p class="mb-0">Specify detail about programming languages (such as java, Python, C/C++, Oracle, SQL
                     etc), softwares (Microsoft Word, Excel, Tally etc) or any other software related Knowledge</p>
@@ -152,14 +159,16 @@
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Projects </h5>
-                    <a href="javascript:void(0)" class=" addprojects text-decoration-none text-primary-c">ADD PROJECTS </a>
+                    <a href="javascript:void(0)" class=" addprojects text-decoration-none text-primary-c">ADD PROJECTS
+                    </a>
                 </div>
                 <p class="mb-0">Specify details about projects you have done in college, internship or at work </p>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Profile Summary </h5>
-                    <a href="javascript:void(0)" class="addprofilesummary text-decoration-none text-primary-c">ADD PROFILE SUMMARY </a>
+                    <a href="javascript:void(0)" class="addprofilesummary text-decoration-none text-primary-c">ADD
+                        PROFILE SUMMARY </a>
                 </div>
                 <p class="mb-0">Your profile summary should mention the highlight of your career and education, what
                     your professional interest are, and what kind of a career you are looking for. Write a meaning full
@@ -289,7 +298,8 @@
                 <div class="d-flex justify-content-between">
                     <div class="col-md-6">
                         <label for="">Work Permit for Other Contries</label>
-                        <p><a href="javascript:void(0)" class="text-decoration-none">Add Work Permit for Other Contries</a></p>
+                        <p><a href="javascript:void(0)" class="text-decoration-none">Add Work Permit for Other
+                                Contries</a></p>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -310,23 +320,372 @@
 </div>
 
 <!-- Modal :- Add Employment-->
-<ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+<ng-template #addEmploymentModal let-modal>
+    <div class="modal-header border-bottom-0">
+        <h4 class="modal-title fw-bold text-dark px-5" id="modal-basic-title">Add Employment</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-      <form>
-        <div class="mb-3">
-          <label for="dateOfBirth">Date of birth</label>
-          <div class="input-group">
-            <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
-            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
-          </div>
-        </div>
-      </form>
+    <div class="modal-body px-5">
+        <form [formGroup]="addEmploymentForm">
+            <div class="col-md-12 p-3">
+                <div>
+                    <label class="form-label text-dark" for="currentDesignation">Designation *</label>
+                    <input class="form-control" type="text" placeholder="Type your Designation"
+                        formControlName="designation">
+                </div>
+                <div class="col-md-12 py-2 mt-2">
+                    <label class="form-label text-dark">Company Name *</label>
+                    <input class="form-control" type="text" placeholder="Type your Organization"
+                        formControlName="companyName">
+                </div>
+                <div class="col-md-12 py-2">
+                    <div>
+                        <label class="form-label text-dark">Is this your current company?</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" checked name="isCurrentCompany" id="inlineRadio1"
+                            (click)="currentCompany($event)" formControlName="isCurrentCompany" value="true">
+                        <label class="form-check-label text-dark" for="inlineRadio1">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="isCurrentCompany" id="inlineRadio2"
+                            (click)="currentCompany($event)" formControlName="isCurrentCompany" value="false">
+                        <label class="form-check-label text-dark" for="inlineRadio2">No</label>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label class="form-label text-dark">Joining Date *</label>
+                    </div>
+                    <form class="row row-cols-sm-auto">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
+                                    (dateSelect)="onDateSelection($event)" ngbDatepicker #d="ngbDatepicker"
+                                    formControllerName="joiningDate">
+                                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i
+                                        class="fa fa-calendar " aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12 mt-3" *ngIf="!isCurrentCompany">
+                    <div>
+                        <label class="form-label text-dark">Worked Till *</label>
+                    </div>
+                    <form class="row row-cols-sm-auto">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                    [(ngModel)]="modelWorkedTill" (dateSelect)="workedTillDateSelection($event)"
+                                    ngbDatepicker #workedTill="ngbDatepicker" formControllerName="workedTill">
+                                <button class="btn btn-outline-secondary calendar" (click)="workedTill.toggle()"
+                                    type="button"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <ng-container *ngIf="isCurrentCompany">
+                    <div class="col-md-12 py-2 mt-2">
+                        <div>
+                            <label class="form-label text-dark">Current Annual Salary*</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="currencyType" id="inlineRadio1"
+                                formControlName="currencyType" value="true">
+                            <label class="form-check-label text-dark" for="inlineRadio1">Indian Rupees</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="currencyType" id="inlineRadio2"
+                                formControlName="currencyType" value="false">
+                            <label class="form-check-label text-dark" for="inlineRadio2">US Dollar</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 row">
+                        <div class="form-group col-md-4">
+                            <label for="inputLacs">in Lacs</label>
+                            <select id="inputState" class="form-control" formControlName="inLacs">
+                                <option value="">Choose...</option>
+                                <option value="0">0 Lacs</option>
+                                <option value="100000">1 Lacs</option>
+                                <option value="200000">2 Lacs</option>
+                                <option value="300000">3 Lacs</option>
+                                <option value="400000">4 Lacs</option>
+                                <option value="500000">5 Lacs</option>
+                                <option value="600000">6 Lacs</option>
+                                <option value="700000">7 Lacs</option>
+                                <option value="800000">8 Lacs</option>
+                                <option value="900000">9 Lacs</option>
+                                <option value="1000000">10 Lacs</option>
+                                <option value="1100000">11 Lacs</option>
+                                <option value="1200000">12 Lacs</option>
+                                <option value="1300000">13 Lacs</option>
+                                <option value="1400000">14 Lacs</option>
+                                <option value="1500000">15 Lacs</option>
+                                <option value="1600000">16 Lacs</option>
+                                <option value="1700000">17 Lacs</option>
+                                <option value="1800000">18 Lacs</option>
+                                <option value="1900000">19 Lacs</option>
+                                <option value="2000000">20 Lacs</option>
+                                <option value="2100000">21 Lacs</option>
+                                <option value="2200000">22 Lacs</option>
+                                <option value="2300000">23 Lacs</option>
+                                <option value="2400000">24 Lacs</option>
+                                <option value="2500000">25 Lacs</option>
+                                <option value="2600000">26 Lacs</option>
+                                <option value="2700000">27 Lacs</option>
+                                <option value="2800000">28 Lacs</option>
+                                <option value="2900000">29 Lacs</option>
+                                <option value="3000000">30 Lacs</option>
+                                <option value="3100000">31 Lacs</option>
+                                <option value="3200000">32 Lacs</option>
+                                <option value="3300000">33 Lacs</option>
+                                <option value="3400000">34 Lacs</option>
+                                <option value="3500000">35 Lacs</option>
+                                <option value="3600000">36 Lacs</option>
+                                <option value="3700000">37 Lacs</option>
+                                <option value="3800000">38 Lacs</option>
+                                <option value="3900000">39 Lacs</option>
+                                <option value="4000000">40 Lacs</option>
+                                <option value="4100000">41 Lacs</option>
+                                <option value="4200000">42 Lacs</option>
+                                <option value="4300000">43 Lacs</option>
+                                <option value="4400000">44 Lacs</option>
+                                <option value="4500000">45 Lacs</option>
+                                <option value="4600000">46 Lacs</option>
+                                <option value="4700000">47 Lacs</option>
+                                <option value="4800000">48 Lacs</option>
+                                <option value="4900000">49 Lacs</option>
+                                <option value="5000000">50 Lacs</option>
+                                <option value="5000001">50+ Lacs</option>
+                                <option value="5500001">55+ Lacs</option>
+                                <option value="6000001">60+ Lacs</option>
+                                <option value="6500001">65+ Lacs</option>
+                                <option value="7000001">70+ Lacs</option>
+                                <option value="7500001">75+ Lacs</option>
+                                <option value="8000001">80+ Lacs</option>
+                                <option value="8500001">85+ Lacs</option>
+                                <option value="9000001">90+ Lacs</option>
+                                <option value="9500001">95+ Lacs</option>
+                                <option value="10000001">100+ Lacs</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputThousand">in Thousand</label>
+                            <select id="inputState" class="form-control" formControlName="inThousand">
+                                <option value="">Choose...</option>
+                                <option value="0">0 Thousand</option>
+                                <option value="5">5 Thousand</option>
+                                <option value="10">10 Thousand</option>
+                                <option value="15">15 Thousand</option>
+                                <option value="20">20 Thousand</option>
+                                <option value="25">25 Thousand</option>
+                                <option value="30">30 Thousand</option>
+                                <option value="35">35 Thousand</option>
+                                <option value="40">40 Thousand</option>
+                                <option value="45">45 Thousand</option>
+                                <option value="50">50 Thousand</option>
+                                <option value="55">55 Thousand</option>
+                                <option value="60">60 Thousand</option>
+                                <option value="65">65 Thousand</option>
+                                <option value="70">70 Thousand</option>
+                                <option value="75">75 Thousand</option>
+                                <option value="80">80 Thousand</option>
+                                <option value="85">85 Thousand</option>
+                                <option value="90">90 Thousand</option>
+                                <option value="95">95 Thousand</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p2-1 mt-3">
+                        <label class="form-label text-dark">Skills Used *</label>
+                        <input class="form-control" type="text"
+                            placeholder="Enter your area of Experties/Specialization" formControlName="skillsUsed">
+                    </div>
+                </ng-container>
+                <div class="col-md-12 p2-1 mt-3">
+                    <label class="form-label text-dark">Job Profile</label>
+                    <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                        formControlName="jobProfile"></textarea>
+                </div>
+                <div class="md-col-12 mt-3" *ngIf="isCurrentCompany">
+                    <label class="form-label text-dark" for="noticePeriod">Notice Period</label>
+                    <select class="form-select" aria-label="Default select example" formControlName="noticePeriod"
+                        (change)="changeNoticePeriod($event)">
+                        <option selected>Select Notice Period...</option>
+                        <option value="15">15 days or less</option>
+                        <option value="30">1 Month</option>
+                        <option value="60">2 Months</option>
+                        <option value="90">3 Months</option>
+                        <option value="91">More than 3 Months</option>
+                        <option value="0">Serving Notice Period</option>
+                    </select>
+                </div>
+                <div class="col-md-12 py-2 mt-2" *ngIf="isServingNoticePeriod">
+                    <label class="form-label text-dark">Remaining Days of Notice Period </label>
+                    <input class="form-control" type="text" placeholder="Remaining Days of Notice Period"
+                        formControlName="remainingDaysOfNoticePeriod">
+                </div>
+
+            </div>
+        </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <a href="javascript:void(0)" class=" text-decoration-none fs-6 px-2" (click)="modal.close('Save click')">Cancel
+        </a>
+        <button type="button" class="btn btn-primary" (click)="createData()">Save</button>
     </div>
-  </ng-template>
+</ng-template>
+
+<!-- Modal :- Add Education-->
+<ng-template #addEducationModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark px-5" id="addEducationModal-basic-title">Add Education</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body px-5">
+        <form>
+            <div class="col-md-12">
+                <div class="md-col-12 mt-3">
+                    <label class="form-label text-dark" for="education">Education*</label>
+                    <app-iautocomplete [data]="education" [(ngModel)]="educationValue"
+                        [ngModelOptions]="{standalone: true}" (OnSelect)="selectEducation($event)">
+                    </app-iautocomplete>
+                </div>
+                <ng-container *ngIf="!educationQualification.below10th">
+                    <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
+                        <label class="form-label text-dark" for="board">Board*</label>
+                        <app-iautocomplete [data]="board">
+                        </app-iautocomplete>
+                    </div>
+                    <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
+                        <label class="form-label text-dark" for="schoolMedium">School Medium*</label>
+                        <app-iautocomplete [data]="schoolMedium">
+                        </app-iautocomplete>
+                    </div>
+                    <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
+                        <label class="form-label text-dark" for="totalMarks">Total Marks</label>
+                        <app-iautocomplete [data]="totalMarks">
+                        </app-iautocomplete>
+                    </div>
+                    <div class="col-md-12 py-2 mt-3" *ngIf="educationQualification.twelve">
+                        <label class="form-label text-dark" for="englishMarks">English Marks</label>
+                        <input class="form-control" type="text" placeholder="Marks (out of 100)">
+                    </div>
+                    <div class="col-md-12 py-2 mt-3" *ngIf="educationQualification.twelve">
+                        <label class="form-label text-dark" for="englishMarks">Maths Marks</label>
+                        <input class="form-control" type="text" placeholder="Marks (out of 100)">
+                    </div>
+                    <div class="md-col-12 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <label class="form-label text-dark" for="course">Course*</label>
+                        <app-iautocomplete [data]="course" [(ngModel)]="courseValue"
+                            [ngModelOptions]="{standalone: true}" (OnSelect)="selectCourse($event)">
+                        </app-iautocomplete>
+                    </div>
+                    <div class="col-md-12 py-2 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <input class="form-control " type="text" placeholder="Enter Other Course">
+                    </div>
+                    <div class="md-col-12 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <label class="form-label text-dark" for="specialization">Specialization* </label>
+                        <app-iautocomplete [data]="specialization">
+                        </app-iautocomplete>
+                    </div>
+                    <div class="col-md-12 py-2 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <input class="form-control" type="text" placeholder="Enter Other Specialization">
+                    </div>
+                    <div class="col-md-12 py-2 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <label class="form-label text-dark" for="universityInstitute">University/Institute*</label>
+                        <input class="form-control" type="text" placeholder="select University/Institute">
+                    </div>
+                    <div class="col-md-12 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <div>
+                            <label class="form-label text-dark" for="">Course Type*</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                value="option1">
+                            <label class="form-check-label" for="inlineRadio1">Full Time</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Part Time</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                                value="option3">
+                            <label class="form-check-label" for="inlineRadio3">Correspondence/Distance Learning</label>
+                        </div>
+                    </div>
+                    <div class="md-col-12 mt-3">
+                        <label class="form-label text-dark" for="passingoutyear">Passing Out Year*</label>
+                        <app-iautocomplete [data]="passingoutyear">
+                        </app-iautocomplete>
+                    </div>
+                    <div class="md-col-12 mt-3"
+                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                        <label class="form-label text-dark" for="gradingSystem">Grading System </label>
+                        <app-iautocomplete [data]="gradingSystem">
+                        </app-iautocomplete>
+                    </div>
+                </ng-container>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- ADD IT SKILLS-->
+<ng-template #addItSkillsModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="addItSkillsModal-basic-title">IT SKILLLS</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+             <div class="col-md-12 py-2 mt-3">
+                <label class="form-label text-dark" >Skill / Software Name*</label>
+                <input class="form-control" type="text" placeholder="Skill / Software Name">
+            </div>
+            <div class="col-md-12 row mt-3"  >
+                <div class="col-md-6 py-2">
+                    <label class="form-label text-dark">Software Version</label>
+                    <input class="form-control" type="text" placeholder="Software Version">
+                </div>
+                <div class="col-md-6 py-2">
+                    <label class="form-label text-dark" >Last Used</label>
+                    <app-iautocomplete [data]="lastused">
+                    </app-iautocomplete>
+                </div>
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark" >Experience</label>
+                </div>
+                <div class="col-md-6">
+                    <app-iautocomplete [data]="years">
+                    </app-iautocomplete>
+                </div>
+                <div class="col-md-6">
+                    <app-iautocomplete [data]="months">
+                    </app-iautocomplete>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+        (click)="modal.close('Save click')">Cancel</a>
+    <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+  import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
@@ -7,13 +7,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserprofileComponent } from './userprofile/userprofile.component';
+import { IautocompleteComponent } from './iautocomplete/iautocomplete.component';
 
 
 @NgModule({
   declarations: [
     ProfileComponent,
     DashboardComponent,
-    UserprofileComponent
+    UserprofileComponent,
+    IautocompleteComponent
   ],
   imports: [
     CommonModule,
