@@ -544,63 +544,63 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body px-5">
-        <form>
+        <form [formGroup]="addEducationForm">
             <div class="col-md-12">
                 <div class="md-col-12 mt-3">
                     <label class="form-label text-dark" for="education">Education*</label>
                     <app-iautocomplete [data]="education" [(ngModel)]="educationValue"
-                        [ngModelOptions]="{standalone: true}" (OnSelect)="selectEducation($event)">
+                        [ngModelOptions]="{standalone: true}" (OnSelect)="selectEducation($event)" formControlName="education">
                     </app-iautocomplete>
                 </div>
                 <ng-container *ngIf="!educationQualification.below10th">
                     <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
                         <label class="form-label text-dark" for="board">Board*</label>
-                        <app-iautocomplete [data]="board">
+                        <app-iautocomplete [data]="board" formControlName="board">
                         </app-iautocomplete>
                     </div>
                     <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
                         <label class="form-label text-dark" for="schoolMedium">School Medium*</label>
-                        <app-iautocomplete [data]="schoolMedium">
+                        <app-iautocomplete [data]="schoolMedium" formControlName="schoolMedium" >
                         </app-iautocomplete>
                     </div>
                     <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
                         <label class="form-label text-dark" for="totalMarks">Total Marks</label>
-                        <app-iautocomplete [data]="totalMarks">
+                        <app-iautocomplete [data]="totalMarks" formControlName="totalMarks">
                         </app-iautocomplete>
                     </div>
                     <div class="col-md-12 py-2 mt-3" *ngIf="educationQualification.twelve">
                         <label class="form-label text-dark" for="englishMarks">English Marks</label>
-                        <input class="form-control" type="text" placeholder="Marks (out of 100)">
+                        <input class="form-control" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Marks (out of 100)" formControlName="englishMarks">
                     </div>
                     <div class="col-md-12 py-2 mt-3" *ngIf="educationQualification.twelve">
                         <label class="form-label text-dark" for="englishMarks">Maths Marks</label>
-                        <input class="form-control" type="text" placeholder="Marks (out of 100)">
+                        <input class="form-control" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Marks (out of 100)" formControlName="mathsMarks">
                     </div>
                     <div class="md-col-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
                         <label class="form-label text-dark" for="course">Course*</label>
                         <app-iautocomplete [data]="course" [(ngModel)]="courseValue"
-                            [ngModelOptions]="{standalone: true}" (OnSelect)="selectCourse($event)">
+                            [ngModelOptions]="{standalone: true}" (OnSelect)="selectCourse($event)" formControlName="course">
                         </app-iautocomplete>
                     </div>
                     <div class="col-md-12 py-2 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
-                        <input class="form-control " type="text" placeholder="Enter Other Course">
+                        <input class="form-control " type="text" placeholder="Enter Other Course" formControlName="otherCourse">
                     </div>
                     <div class="md-col-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
                         <label class="form-label text-dark" for="specialization">Specialization* </label>
-                        <app-iautocomplete [data]="specialization">
+                        <app-iautocomplete [data]="specialization" formControlName="specialization">
                         </app-iautocomplete>
                     </div>
                     <div class="col-md-12 py-2 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
-                        <input class="form-control" type="text" placeholder="Enter Other Specialization">
+                        <input class="form-control" type="text" placeholder="Enter Other Specialization" formControlName="otherSpecialization">
                     </div>
                     <div class="col-md-12 py-2 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
                         <label class="form-label text-dark" for="universityInstitute">University/Institute*</label>
-                        <input class="form-control" type="text" placeholder="select University/Institute">
+                        <input class="form-control" type="text" placeholder="select University/Institute" formControlName="universityInstitute">
                     </div>
                     <div class="col-md-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
@@ -609,29 +609,29 @@
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                value="option1">
+                                value="1" formControlName="courseType">
                             <label class="form-check-label" for="inlineRadio1">Full Time</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                                value="option2">
+                                value="2" formControlName="courseType">
                             <label class="form-check-label" for="inlineRadio2">Part Time</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                                value="option3">
+                                value="3" formControlName="courseType">
                             <label class="form-check-label" for="inlineRadio3">Correspondence/Distance Learning</label>
                         </div>
                     </div>
                     <div class="md-col-12 mt-3">
                         <label class="form-label text-dark" for="passingoutyear">Passing Out Year*</label>
-                        <app-iautocomplete [data]="passingoutyear">
+                        <app-iautocomplete [data]="passingoutyear" formControlName="passingOutYear">
                         </app-iautocomplete>
                     </div>
                     <div class="md-col-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
                         <label class="form-label text-dark" for="gradingSystem">Grading System </label>
-                        <app-iautocomplete [data]="gradingSystem">
+                        <app-iautocomplete [data]="gradingSystem" formControlName="gradingSystem">
                         </app-iautocomplete>
                     </div>
                 </ng-container>

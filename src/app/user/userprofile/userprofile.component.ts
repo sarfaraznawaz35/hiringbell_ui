@@ -18,8 +18,11 @@ export class UserprofileComponent implements OnInit {
   modelWorkedTill: NgbDateStruct;
   isCurrentCompany:boolean=true;
   addEmploymentForm:FormGroup;
+  addEducationForm:FormGroup;
   employmentDetailId: number=0;
   employmentData:EmploymentDetail=new EmploymentDetail();
+  educationData:EducationalDetail=new EducationalDetail();
+  educationalDetailId: number=0;
   isServingNoticePeriod: boolean=false;
   education: autoCompleteModal = null;
   educationValue: number= 0;
@@ -764,14 +767,17 @@ export class UserprofileComponent implements OnInit {
     if(data){
       this.employmentDetailId = data.userId;
       this.initAddEmploymentForm();
-      this.loaddata();
+      this.loadEmploymentData();
+      this.initAddEducationForm();
+      this.loadEducationData();
+      
     }
     else
     ErrorToast("please login again..")
   }
 
 
-  createData(){
+  createEmploymentData(){
     let finalAmount = Number(this.addEmploymentForm.get('inLacs').value) + Number(this.addEmploymentForm.get('inThousand').value);
     this.addEmploymentForm.get('currentAnnualSalary').setValue(finalAmount);
     let value = this.addEmploymentForm.value;
@@ -784,6 +790,8 @@ export class UserprofileComponent implements OnInit {
       }
     })
   }
+
+
 
   selectEducation(e: any){
     let data = e;
@@ -854,7 +862,7 @@ export class UserprofileComponent implements OnInit {
 
   }
 
-  loaddata(){
+  loadEmploymentData(){
     this.employmentDetailId=1;
     if(this.employmentDetailId > 0){
       this.htttp.get(`EmploymentDetail/getByEmploymentDetailId/${this.employmentDetailId}`).then(response =>{
@@ -870,10 +878,7 @@ export class UserprofileComponent implements OnInit {
                           this.addEmploymentForm.get('inLacs').setValue(data[0]);
                           this.addEmploymentForm.get('inThousand').setValue(data[1]);
                         }
-                      }
-                      
-
-            
+                      }          
           let date = new Date(this.employmentData.joiningDate);
           this.model = { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
           Toast("Record found");
@@ -882,7 +887,20 @@ export class UserprofileComponent implements OnInit {
     }
   }
 
-  updateData(){
+  loadEducationData(){
+    this.educationalDetailId=1;
+    if(this.educationalDetailId>0){
+      this.htttp.get(`EducationalDetail/getById/${this.educationalDetailId}`).then(Response => {
+        if(Response.responseBody){
+          this.educationData=Response.responseBody;
+          console.log(this.employmentData);
+          this.initAddEducationForm();
+        }
+      })
+    }
+  }
+
+  updateEmploymentData(){
     let value = this.addEmploymentForm.value;
     
   }
@@ -934,6 +952,7 @@ export class UserprofileComponent implements OnInit {
 
   initAddEmploymentForm(){
     this.addEmploymentForm=this.fb.group({
+      employmentDetailId: new FormControl(this.employmentDetailId),
       designation: new FormControl(this.employmentData.designation),
       companyName: new FormControl(this.employmentData.companyName),
       isCurrentCompany:new FormControl(this.employmentData.isCurrentCompany? 'true':'false'),
@@ -948,8 +967,28 @@ export class UserprofileComponent implements OnInit {
       noticePeriod: new FormControl(this.employmentData.noticePeriod),
       isServingNoticePeriod: new FormControl(this.employmentData.isServingNoticePeriod),
       remainingDaysOfNoticePeriod: new FormControl(this.employmentData.remainingDaysOfNoticePeriod)
-      
     }) 
+  }
+
+  initAddEducationForm(){
+    this.addEducationForm=this.fb.group({
+      educationalDetailId: new FormControl(this.educationData.educationalDetailId),
+      education: new FormControl(this.educationData.education),
+      board: new FormControl(this.educationData.board),
+      schoolMedium: new FormControl(this.educationData.schoolMedium),
+      totalMarks: new FormControl(this.educationData.totalMarks),
+      englishMarks: new FormControl(this.educationData.englishMarks),
+      mathsMarks: new FormControl(this.educationData.mathsMarks),
+      course: new FormControl(this.educationData.course),
+      otherCourse: new FormControl(this.educationData.otherCourse),
+      specialization: new FormControl(this.educationData.specialization),
+      otherSpecialization: new FormControl(this.educationData.otherSpecialization),
+      universityInstitute: new FormControl(this.educationData.universityInstitute),
+      courseType: new FormControl(this.educationData.courseType),
+      passingOutYear: new FormControl(this.educationData.passingOutYear),
+      gradingSystem: new FormControl(this.educationData.passingOutYear)
+    
+    })
   }
 
 }
@@ -970,6 +1009,24 @@ class EmploymentDetail {
   noticePeriod: number= null ;
   isServingNoticePeriod: boolean=null;
   remainingDaysOfNoticePeriod:  number=0;
-  
+}
+
+class EducationalDetail{
+  educationalDetailId: number=0;
+  education: number=null;
+  board: number=null;
+  schoolMedium: number=null;
+  totalMarks: number=null;
+  englishMarks: number=null;
+  mathsMarks: number=null;
+  course: number=null;
+  otherCourse: String='';
+  specialization: number=null;
+  otherSpecialization: String='';
+  universityInstitute: String='';
+  courseType: number=null;
+  passingOutYear: number=null;
+  gradingSystem: number=null;
+
 
 }
