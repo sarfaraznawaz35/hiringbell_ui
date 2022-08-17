@@ -159,7 +159,8 @@
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Projects </h5>
-                    <a href="javascript:void(0)" class=" addprojects text-decoration-none text-primary-c">ADD PROJECTS
+                    <a href="javascript:void(0)" (click)="projectsPopup(addProjectsModal)"
+                        class=" addprojects text-decoration-none text-primary-c">ADD PROJECTS
                     </a>
                 </div>
                 <p class="mb-0">Specify details about projects you have done in college, internship or at work </p>
@@ -533,7 +534,7 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class=" text-decoration-none fs-6 px-2" (click)="modal.close('Save click')">Cancel
         </a>
-        <button type="button" class="btn btn-primary" (click)="createData()">Save</button>
+        <button type="button" class="btn btn-primary" (click)="createEmploymentData()">Save</button>
     </div>
 </ng-template>
 
@@ -548,8 +549,8 @@
             <div class="col-md-12">
                 <div class="md-col-12 mt-3">
                     <label class="form-label text-dark" for="education">Education*</label>
-                    <app-iautocomplete [data]="education" [(ngModel)]="educationValue"
-                        [ngModelOptions]="{standalone: true}" (OnSelect)="selectEducation($event)" formControlName="education">
+                    <app-iautocomplete [data]="education" name="education" (OnSelect)="selectEducation($event)"
+                        formControlName="education">
                     </app-iautocomplete>
                 </div>
                 <ng-container *ngIf="!educationQualification.below10th">
@@ -560,32 +561,70 @@
                     </div>
                     <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
                         <label class="form-label text-dark" for="schoolMedium">School Medium*</label>
-                        <app-iautocomplete [data]="schoolMedium" formControlName="schoolMedium" >
-                        </app-iautocomplete>
+                        <select class="form-control" formControlName="schoolMedium">
+                            <option value="">Choose...</option>
+                            <option value="Assamese">Assamese / Asomiya</option>
+                            <option value="Bangla">Bengali / Bangla</option>
+                            <option value="English">English</option>
+                            <option value="Gujarati">Gujarati</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Kashmiri">Kashmiri</option>
+                            <option value="Konkani">Konkani</option>
+                            <option value="Malayalam">Malayalam</option>
+                            <option value="Manipuri">Manipuri</option>
+                            <option value="Marathi">Marathi</option>
+                            <option value="Oriya">Oriya</option>
+                            <option value="Punjabi">Punjabi</option>
+                            <option value="Sanskrit">Sanskrit</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Urdu">Urdu</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="md-col-12 mt-3" *ngIf="educationQualification.tenth || educationQualification.twelve">
                         <label class="form-label text-dark" for="totalMarks">Total Marks</label>
-                        <app-iautocomplete [data]="totalMarks" formControlName="totalMarks">
-                        </app-iautocomplete>
+                        <select class="form-control" formControlName="totalMarks">
+                            <option value="">Choose...</option>
+                            <option value="Less than 40%"> Less than 40%</option>
+                            <option value="40-44.9%">40-44.9%</option>
+                            <option value="45-49.9%">45-49.9%</option>
+                            <option value="50-54.9%">50-54.9%</option>
+                            <option value="55-59.9%">55-59.9%</option>
+                            <option value="60-64.9%">60-64.9%</option>
+                            <option value="65-69.9%">65-69.9%</option>
+                            <option value="70-74.9%">70-74.9%</option>
+                            <option value="75-79.9%">75-79.9%</option>
+                            <option value="80-84.9%">80-84.9%</option>
+                            <option value="85-89.9%">85-89.9%</option>
+                            <option value="90-94.9%">90-94.9%</option>
+                            <option value="95-99.9%">95-99.9%</option>
+                            <option value="100%">100%</option>
+                        </select>
                     </div>
                     <div class="col-md-12 py-2 mt-3" *ngIf="educationQualification.twelve">
                         <label class="form-label text-dark" for="englishMarks">English Marks</label>
-                        <input class="form-control" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Marks (out of 100)" formControlName="englishMarks">
+                        <input class="form-control" type="number"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                            placeholder="Marks (out of 100)" formControlName="englishMarks">
                     </div>
                     <div class="col-md-12 py-2 mt-3" *ngIf="educationQualification.twelve">
                         <label class="form-label text-dark" for="englishMarks">Maths Marks</label>
-                        <input class="form-control" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Marks (out of 100)" formControlName="mathsMarks">
+                        <input class="form-control" type="number"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                            placeholder="Marks (out of 100)" formControlName="mathsMarks">
                     </div>
-                    <div class="md-col-12 mt-3"
-                        *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
+                    <div class="md-col-12 mt-3" *ngIf="addEducationForm.controls.education.value >= 3">
                         <label class="form-label text-dark" for="course">Course*</label>
-                        <app-iautocomplete [data]="course" [(ngModel)]="courseValue"
-                            [ngModelOptions]="{standalone: true}" (OnSelect)="selectCourse($event)" formControlName="course">
+                        <app-iautocomplete [data]="course" name="course" (OnSelect)="selectCourse($event)"
+                            formControlName="course">
                         </app-iautocomplete>
                     </div>
                     <div class="col-md-12 py-2 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
-                        <input class="form-control " type="text" placeholder="Enter Other Course" formControlName="otherCourse">
+                        <input class="form-control " type="text" placeholder="Enter Other Course"
+                            formControlName="otherCourse">
                     </div>
                     <div class="md-col-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
@@ -595,12 +634,14 @@
                     </div>
                     <div class="col-md-12 py-2 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
-                        <input class="form-control" type="text" placeholder="Enter Other Specialization" formControlName="otherSpecialization">
+                        <input class="form-control" type="text" placeholder="Enter Other Specialization"
+                            formControlName="otherSpecialization">
                     </div>
                     <div class="col-md-12 py-2 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
                         <label class="form-label text-dark" for="universityInstitute">University/Institute*</label>
-                        <input class="form-control" type="text" placeholder="select University/Institute" formControlName="universityInstitute">
+                        <input class="form-control" type="text" placeholder="select University/Institute"
+                            formControlName="universityInstitute">
                     </div>
                     <div class="col-md-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
@@ -608,31 +649,38 @@
                             <label class="form-label text-dark" for="">Course Type*</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                value="1" formControlName="courseType">
+                            <input class="form-check-input" type="radio" name="courseType" id="inlineRadio1" value="1"
+                                formControlName="courseType">
                             <label class="form-check-label" for="inlineRadio1">Full Time</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                                value="2" formControlName="courseType">
+                            <input class="form-check-input" type="radio" name="courseType" id="inlineRadio2" value="2"
+                                formControlName="courseType">
                             <label class="form-check-label" for="inlineRadio2">Part Time</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                                value="3" formControlName="courseType">
+                            <input class="form-check-input" type="radio" name="courseType" id="inlineRadio3" value="3"
+                                formControlName="courseType">
                             <label class="form-check-label" for="inlineRadio3">Correspondence/Distance Learning</label>
                         </div>
                     </div>
                     <div class="md-col-12 mt-3">
                         <label class="form-label text-dark" for="passingoutyear">Passing Out Year*</label>
-                        <app-iautocomplete [data]="passingoutyear" formControlName="passingOutYear">
-                        </app-iautocomplete>
+                        <select class="form-control" formControlName="passingOutYear">
+                            <option value="">Choose...</option>
+                            <option [value]="item" *ngFor="let item of passingOutYear" >{{item}}</option>
+                        </select>
                     </div>
                     <div class="md-col-12 mt-3"
                         *ngIf="educationQualification.graduation || educationQualification.masters || educationQualification.doctoratePhD">
                         <label class="form-label text-dark" for="gradingSystem">Grading System </label>
-                        <app-iautocomplete [data]="gradingSystem" formControlName="gradingSystem">
-                        </app-iautocomplete>
+                        <select class="form-control" formControlName="gradingSystem">
+                            <option value="">Choose...</option>
+                            <option value="Scale 10 Grading System">Scale 10 Grading System</option>
+                            <option value="Scale 4 Grading System">Scale 4 Grading System</option>
+                            <option value="%Marks of 100 Maximum">%Marks of 100 Maximum</option>
+                            <option value="Course Requires a Pass">Course Requires a Pass</option>
+                        </select>
                     </div>
                 </ng-container>
             </div>
@@ -641,51 +689,240 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-primary-c" *ngIf="educationData.educationalDetailId <= 0"
+            (click)="createEducationData()">Save</button>
+        <button type="button" class="btn btn-primary-c" *ngIf="educationData.educationalDetailId > 0"
+            (click)="updateEmploymentData()">Update</button>
+
     </div>
 </ng-template>
 
 <!-- Modal :- ADD IT SKILLS-->
 <ng-template #addItSkillsModal let-modal>
-    <div class="modal-header">
+    <div class="modal-header px-5">
         <h4 class="modal-title text-dark" id="addItSkillsModal-basic-title">IT SKILLLS</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-        <form>
-             <div class="col-md-12 py-2 mt-3">
-                <label class="form-label text-dark" >Skill / Software Name*</label>
-                <input class="form-control" type="text" placeholder="Skill / Software Name">
+    <div class="mt-1 px-5">
+        <p>Specify details about programming languages (such as Java, Python, C/C++, Oracle, SQL etc), softwares
+            (Microsoft Word, Excel, Tally etc) or any other software related knowledge.</p>
+    </div>
+    <div class="modal-body px-5 mt-0">
+        <form [formGroup]="addItSkillsForm">
+            <div class="col-md-12 py-2 mt-0 pe-4">
+                <label class="form-label text-dark">Skill / Software Name*</label>
+                <input class="form-control" type="text" placeholder="Skill / Software Name" formControlName="skillName">
             </div>
-            <div class="col-md-12 row mt-3"  >
+            <div class="col-md-12 row mt-3">
                 <div class="col-md-6 py-2">
                     <label class="form-label text-dark">Software Version</label>
-                    <input class="form-control" type="text" placeholder="Software Version">
+                    <input class="form-control" type="text" placeholder="Software Version" formControlName="softwareVersion">
                 </div>
                 <div class="col-md-6 py-2">
-                    <label class="form-label text-dark" >Last Used</label>
-                    <app-iautocomplete [data]="lastused">
-                    </app-iautocomplete>
+                    <label class="form-label text-dark">Last Used</label>
+                    <select class="form-control" formControlName="lastUsed">
+                        <option value="">Select..</option>
+                        <option [value]="item" *ngFor="let item of lastUsedItSkill" >{{item}}</option>
+                    </select>
                 </div>
             </div>
             <div class="col-md-12 row mt-3">
                 <div>
-                    <label class="form-label text-dark" >Experience</label>
+                    <label class="form-label text-dark">Experience</label>
                 </div>
                 <div class="col-md-6">
-                    <app-iautocomplete [data]="years">
-                    </app-iautocomplete>
+                    <select class="form-control" formControlName="yearsExperienceItSkill">
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of experienceYearsValue" >{{item}} Year</option>
+                    </select>
                 </div>
                 <div class="col-md-6">
-                    <app-iautocomplete [data]="months">
-                    </app-iautocomplete>
+                    <select class="form-control" formControlName="monthExperienceItSkill">
+                        <option value="">in Months..</option>
+                        <option [value]="item" *ngFor="let item of monthExperienceValue" >{{item}} Month</option>
+                    </select>
                 </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
-        (click)="modal.close('Save click')">Cancel</a>
-    <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.c('Save click')">Save</button>
     </div>
 </ng-template>
+
+<!-- Modal :- ADD Project Detail-->
+<ng-template #addProjectsModal let-modal>
+    <div class="modal-header px-5">
+        <h4 class="modal-title text-dark" id="addProjectsModal-basic-title">Add Projects</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body px-5">
+        <form [formGroup]="addProjectForm">
+            <div class="col-md-12 py-2 mt-3 pe-4">
+                <label class="form-label text-dark">Project Title*</label>
+                <input class="form-control" type="text" placeholder="Enter Project Title" formControlName="projectTitle" >
+            </div>
+            <div class="col-md-12 py-2 mt-3 pe-4">
+                <label class="form-label text-dark">Client*</label>
+                <input class="form-control" type="text" placeholder="Enter Client Name" formControlName="client">
+            </div>
+            <div class="col-md-12 mt-3 text-dark">
+                <div>
+                    <label class="form-label text-dark" for="">Project Status</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="projectStatus" id="inlineRadio1" value="true"
+                        formControlName="projectStatus">
+                    <label class="form-check-label" for="inlineRadio1">In Progress</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="projectStatus" id="inlineRadio2" value="false"
+                        formControlName="projectStatus">
+                    <label class="form-check-label" for="inlineRadio2">Finished</label>
+                </div>
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Worked from*</label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="workedFromYears">
+                        <option value="">Select Year..</option>
+                        <option [value]="item" *ngFor="let item of workedFromYrs" >{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="workedFromMonth" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Worked Till*</label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" formControlName="workedTillYears" >
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs" >{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="workedTillMonth" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Details of Project*</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    formControlName="detailsOfProject"></textarea>
+            </div>
+            <div class="col-md-12 py-2 mt-3 pe-4">
+                <label class="form-label text-dark">Project Location</label>
+                <input class="form-control" type="text" placeholder="Enter Project Location" formControlName="projectLocation">
+            </div>
+            <div class="col-md-12 mt-3 text-dark">
+                <div>
+                    <label class="form-label text-dark" for="">Project Site</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="projectSite" id="inlineRadio1" value="true"
+                        formControlName="projectSite">
+                    <label class="form-check-label" for="inlineRadio1">Offsite</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="projectSite" id="inlineRadio2" value="false"
+                        formControlName="projectSite">
+                    <label class="form-check-label" for="inlineRadio2">Onsite</label>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3 text-dark">
+                <div>
+                    <label class="form-label text-dark" for="">Nature of Employment</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="natureOfEmployment" id="inlineRadio1" value="1"
+                        formControlName="natureOfEmployment">
+                    <label class="form-check-label" for="inlineRadio1">Full Time</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="natureOfEmployment" id="inlineRadio2" value="2"
+                        formControlName="natureOfEmployment">
+                    <label class="form-check-label" for="inlineRadio2">Part Time</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="natureOfEmployment" id="inlineRadio3" value="3"
+                        formControlName="natureOfEmployment">
+                    <label class="form-check-label" for="inlineRadio3">Contractual</label>
+                </div>
+            </div>
+            <div class="md-col-12 mt-3 pe-4">
+                <label class="form-label text-dark" for="teamSize">Team Size</label>
+                <select class="form-control" formControlName="teamSize">
+                    <option value="">Select..</option>
+                    <option [value]="item" *ngFor="let item of teamSizeNumber">{{item}}</option>
+                </select>
+            </div>
+            <div class="md-col-12 mt-3 pe-4">
+                <label class="form-label text-dark" for="role">Role</label>
+                <select class="form-control text-muted" formControlName="role">
+                    <option value="">Select Role..</option>
+                    <option value="Domain Expert">Domain Expert</option>
+                    <option value="Sr. Project Leader">Sr. Project Leader</option>
+                    <option value="Solution Architect">Solution Architect</option>
+                    <option value="Quality Analyst">Quality Analyst</option>
+                    <option value="Database Architect/DBA">Database Architect/DBA</option>
+                    <option value="Network/System Administrator">Network/System Administrator</option>
+                    <option value="Project Leader">Project Leader</option>
+                    <option value="Module Leader">Module Leader</option>
+                    <option value="Sr Programmer">Sr. Programmer</option>
+                    <option value="Programmer">Programmer</option>
+                    <option value="Test Engineer">Test Engineer</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Role Description</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    formControlName="roleDescription"></textarea>
+            </div>
+            <div class="col-md-12 py-2 mt-3 pe-4">
+                <label class="form-label text-dark">Skills Used</label>
+                <input class="form-control" type="text" placeholder="Enter Skills Used" formControlName="skillsUsed">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="createProjectData()">Save</button>
+    </div>
+</ng-template>
+
