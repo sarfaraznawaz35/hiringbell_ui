@@ -23,8 +23,11 @@ export class UserprofileComponent implements OnInit {
   addItSkillsForm:FormGroup;
   employmentDetailId: number=0;
   employmentData:EmploymentDetail=new EmploymentDetail();
+  employmentDataArr: Array <EmploymentDetail> = [];
   educationData:EducationalDetail=new EducationalDetail();
   projectData:ProjectDetail=new ProjectDetail();
+  projectDetailId: number=0;
+  projectDataArr: Array <ProjectDetail> = [];
   itSkillsData: ItSkills=new ItSkills();
   educationalDetailId: number=0;
   isServingNoticePeriod: boolean=false;
@@ -51,6 +54,7 @@ export class UserprofileComponent implements OnInit {
   workedTillYrs: Array<any>=[];
   teamSizeNumber: Array<any>=[];
   userId: number=0;
+  isPageReady: boolean = false;
 
   constructor(private modalService: NgbModal,
               private fb:FormBuilder,
@@ -128,7 +132,6 @@ export class UserprofileComponent implements OnInit {
       this.loadEducationData();
       this.loadPojectData();
       this.initAddProjectForm();
-      
     }
     else
     ErrorToast("please login again..")
@@ -151,6 +154,7 @@ export class UserprofileComponent implements OnInit {
 
   createEducationData(){
     let value = this.addEducationForm.value;
+    console.log(value);
     this.http.post("EducationalDetail/addEducationalDetail", value).then(Response => {
       if(Response.responseBody){
         this.educationData=Response.responseBody;
@@ -229,24 +233,23 @@ export class UserprofileComponent implements OnInit {
     }
 
   loadEmploymentData(){
-    this.employmentDetailId=1;
-    if(this.employmentDetailId > 0){
-      this.http.get(`EmploymentDetail/getByEmploymentDetailId/${this.employmentDetailId}`).then(response =>{
+    if(this.userId > 0){
+      this.http.get(`EmploymentDetail/getByUserId/${this.userId}`).then(response =>{
         if(response.responseBody){
-          this.employmentData=response.responseBody;
-          console.log(this.employmentData);
-          this.initAddEmploymentForm();
-          if(this.employmentData.currentAnnualSalary>0){
-                        let income = this.employmentData.currentAnnualSalary;
-                          if(income > 100000){
-                          let value = ((income/100000).toFixed(2)).toString();
-                          let data = value.split('.')
-                          this.addEmploymentForm.get('inLacs').setValue(data[0]);
-                          this.addEmploymentForm.get('inThousand').setValue(data[1]);
-                        }
-                      }          
-          let date = new Date(this.employmentData.joiningDate);
-          this.model = { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
+          this.employmentDataArr=response.responseBody;
+          console.log(this.employmentDataArr);
+          // this.initAddEmploymentForm();
+          // if(this.employmentData.currentAnnualSalary>0){
+          //               let income = this.employmentData.currentAnnualSalary;
+          //                 if(income > 100000){
+          //                 let value = ((income/100000).toFixed(2)).toString();
+          //                 let data = value.split('.')
+          //                 this.addEmploymentForm.get('inLacs').setValue(data[0]);
+          //                 this.addEmploymentForm.get('inThousand').setValue(data[1]);
+          //               }
+          //             }          
+          // let date = new Date(this.employmentData.joiningDate);
+          // this.model = { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
           Toast("Record found");
         }
       })
@@ -267,12 +270,16 @@ export class UserprofileComponent implements OnInit {
   }
   
   loadPojectData(){
+    this.isPageReady = false;
     if(this.userId>0){
       this.http.get(`ProjectDetail/getByUserId/${this.userId}`).then(Response => {
         if(Response.responseBody){
-          this.projectData=Response.responseBody;
-          console.log(this.projectData);
-
+          let data = Response.responseBody;
+          for (let i = 0; i < data.length; i++) {
+            this.projectDataArr.push(data[i]);
+          }
+          console.log(this.projectDataArr);
+          this.isPageReady = true;
         }
       })
     }
@@ -298,7 +305,29 @@ loadBoard(){
   })
 }
 
-  updateEmploymentData(){
+employmentUpdatePopUp(item: EmploymentDetail, content: any){
+  if(item != null){
+    this.employmentDetailId = item.employmentDetailId;
+    this.employmentData = item;
+    this.initAddEmploymentForm();
+    this.emloymentModalReference = this.modalService.open(content)
+    this.emloymentModalReference = this.modalService.open(content,{ size: 'lg' });
+  }
+
+}
+
+updateEmploymentData(){
+  let value = this.addEmploymentForm.value;
+  this.http.put(`EmploymentDetail/updateEmploymentDetail/${this.employmentDetailId}`, value).then(res =>{
+    if(res.responseBody){
+      this.employmentData=res.responseBody;
+      console.log(this.employmentData);
+      this.initAddEmploymentForm();
+    }
+  })
+}
+
+  updateEducationData(){
     this.educationalDetailId=1;
     let value = this.addEmploymentForm.value;
     this.http.put(`EducationalDetail/updateEducationalDetail/${this.educationalDetailId}`, value).then(res => {
@@ -308,7 +337,26 @@ loadBoard(){
         this.initAddEducationForm();
       }
     })
-    
+  }
+
+  projectUpdatePopUp(item: ProjectDetail, content: any) {
+    if (item != null) {
+      this.projectDetailId = item.projectDetailId;
+      this.projectData = item;
+      this.initAddProjectForm();
+      this.projectsModalReference = this.modalService.open(content,{size: 'lg'});
+    }
+  }
+
+  updateProjectData(){
+    let value = this.addProjectForm.value;
+   this.http.put(`ProjectDetail/updateProjectDetail/${this.projectDetailId}`, value).then(res =>{
+    if(res.responseBody){
+      this.projectData=res.responseBody;
+      console.log(this.projectData);
+      this.initAddProjectForm();
+    }
+   })
   }
 
   changeNoticePeriod(e: any){
@@ -325,6 +373,7 @@ loadBoard(){
     this.emloymentModalReference = this.modalService.open(content,{ size: 'lg' });
   }
 
+  
   educationPopup(content){
     this.education.data = [];
     let data = this.educationListData.filter(x => x.childId == 0);
@@ -340,9 +389,10 @@ loadBoard(){
     this.itSkillsModalReference = this.modalService.open(content,{size: 'lg'});
   }
   projectsPopup(content){
+    this.projectData = new ProjectDetail();
+    this.initAddProjectForm();
     this.projectsModalReference = this.modalService.open(content,{size: 'lg'});
   }
-
 
   onDateSelection(e: NgbDateStruct) {
     let date = new Date(e.year, e.month - 1, e.day);
@@ -389,6 +439,7 @@ loadBoard(){
   initAddEducationForm(){
     this.addEducationForm=this.fb.group({
       educationalDetailId: new FormControl(this.educationData.educationalDetailId),
+      userId: new FormControl(this.educationData.userId),
       education: new FormControl(this.educationData.education),
       board: new FormControl(this.educationData.board),
       schoolMedium: new FormControl(this.educationData.schoolMedium),
@@ -408,7 +459,7 @@ loadBoard(){
   }
   initAddProjectForm(){
     this.addProjectForm=this.fb.group({
-      ProjectDetailId: new FormControl(this.projectData.ProjectDetailId),
+      projectDetailId: new FormControl(this.projectData.projectDetailId),
       userId: new FormControl(this.userId),
       projectTitle: new FormControl(this.projectData.projectTitle),
       client: new FormControl(this.projectData.client),
@@ -443,6 +494,7 @@ loadBoard(){
 
 class EmploymentDetail {
   employmentDetailId: number=0;
+  userId: number=0;
   designation: String='';
   companyName: String='';
   isCurrentCompany: boolean=null;
@@ -461,6 +513,7 @@ class EmploymentDetail {
 
 class EducationalDetail{
   educationalDetailId: number=0;
+  userId: number=0;
   education: number=null;
   board: number=null;
   schoolMedium: number=null;
@@ -479,7 +532,7 @@ class EducationalDetail{
 }
 
 class ProjectDetail{
-  ProjectDetailId: number=null;
+  projectDetailId: number=0;
   userId: number=null;
   projectTitle: String='';
   client: String='';

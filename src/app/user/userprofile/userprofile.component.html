@@ -135,7 +135,14 @@
                     <a href="javascript:void(0)" (click)="employementPopup(addEmploymentModal)"
                         class="addemployment text-decoration-none text-primary-c">ADD EMPLOYMENT</a>
                 </div>
-                <p class="mb-0">Employment Detail</p>
+                <ng-container *ngIf="employmentDataArr.length > 0">
+                    <ng-container *ngFor="let item of employmentDataArr">
+                        <div>{{item.designation}} <a href="javascript:void(0)" class="text-decoration-none" (click)="employmentUpdatePopUp(item, addEmploymentModal)" ><i class="fa fa-pencil"></i></a></div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="employmentDataArr.length <= 0">
+                    <p class="mb-0">Specify your Employment Detail</p>
+                </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
@@ -163,7 +170,15 @@
                         class=" addprojects text-decoration-none text-primary-c">ADD PROJECTS
                     </a>
                 </div>
-                <p class="mb-0">Specify details about projects you have done in college, internship or at work </p>
+                <ng-container *ngIf="projectDataArr.length > 0">
+                    <ng-container *ngFor="let item of projectDataArr">
+                        <div>{{item.detailsOfProject}} <a href="javascript:void(0)" class="text-decoration-none" (click)="projectUpdatePopUp(item, addProjectsModal)"><i class="fa fa-pencil"></i></a></div>
+                        
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="projectDataArr.length <= 0">
+                    <p class="mb-0">Specify details about projects you have done in college, internship or at work </p>
+                </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
@@ -534,7 +549,8 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class=" text-decoration-none fs-6 px-2" (click)="modal.close('Save click')">Cancel
         </a>
-        <button type="button" class="btn btn-primary" (click)="createEmploymentData()">Save</button>
+        <button type="button" *ngIf="employmentData.employmentDetailId == 0" class="btn btn-primary" (click)="createEmploymentData()">Save</button>
+        <button type="button" *ngIf="employmentData.employmentDetailId > 0" class="btn btn-primary" (click)="updateEmploymentData()" >Update</button>
     </div>
 </ng-template>
 
@@ -692,7 +708,7 @@
         <button type="button" class="btn btn-primary-c" *ngIf="educationData.educationalDetailId <= 0"
             (click)="createEducationData()">Save</button>
         <button type="button" class="btn btn-primary-c" *ngIf="educationData.educationalDetailId > 0"
-            (click)="updateEmploymentData()">Update</button>
+            (click)="updateEducationData()">Update</button>
 
     </div>
 </ng-template>
@@ -922,7 +938,8 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="createProjectData()">Save</button>
+        <button type="button" *ngIf="projectData.projectDetailId == 0" class="btn btn-primary-c" (click)="createProjectData()">Save</button>
+        <button type="button" *ngIf="projectData.projectDetailId > 0" class="btn btn-primary-c" (click)="updateProjectData()">Update</button>
     </div>
 </ng-template>
 
