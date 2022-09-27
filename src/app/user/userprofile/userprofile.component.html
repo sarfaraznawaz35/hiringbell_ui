@@ -80,7 +80,7 @@
                 </p>
             </div>
         </div>
-        <div class=" col-md-9 p-0 m-0">
+        <div class=" col-md-9 p-0 m-0" *ngIf="isPageReady">
             <div class="col-md-12 py-3 card shadow-lg mt-4">
                 <h5 class="text-dark ps-3">Resume</h5>
                 <p class="ps-3 mb-0">Resume is the most important document recruiters look for. Recruiters generally do
@@ -125,9 +125,21 @@
                     profiles without resumes</p>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
-                <h5 class="text-dark">Key Skills <a href="javascript:void(0)"><i class=" ps-2 fs-6 fa fa-pencil"
-                            aria-hidden="true"></i></a> </h5>
-                <p class="mb-0">Mention your Skills</p>
+                <div class="d-flex justify-content-between">
+                    <h5 class="text-dark">Key Skills </h5>
+                    <a href="javascript:void(0)" (click)="keySkillPopUp(addKeySkillModal, keySkillData)"
+                        class="addemployment text-decoration-none text-primary-c">ADD KEY SKILLS</a>
+                </div>
+                <ng-container *ngIf="keySkillData.keySkillData.length > 0" >
+                <div>
+                    <ng-container *ngFor="let item of keySkillData.keySkillData" >
+                        <span class="mx-3 badge bg-primary">{{item}}</span>
+                    </ng-container>
+                </div>
+                </ng-container>
+                <ng-container *ngIf="keySkillData.keySkillData.length <= 0" >
+                    <p class="mb-0">Mention your Skills</p>
+                </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
@@ -137,7 +149,9 @@
                 </div>
                 <ng-container *ngIf="employmentDataArr.length > 0">
                     <ng-container *ngFor="let item of employmentDataArr">
-                        <div>{{item.designation}} <a href="javascript:void(0)" class="text-decoration-none" (click)="employmentUpdatePopUp(item, addEmploymentModal)" ><i class="fa fa-pencil"></i></a></div>
+                        <div>{{item.designation}} <a href="javascript:void(0)" class="text-decoration-none"
+                                (click)="employmentUpdatePopUp(item, addEmploymentModal)"><i
+                                    class="fa fa-pencil"></i></a></div>
                     </ng-container>
                 </ng-container>
                 <ng-container *ngIf="employmentDataArr.length <= 0">
@@ -148,20 +162,36 @@
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Education </h5>
                     <a href="javascript:void(0)" (click)="educationPopup(addEducationModal)"
-                        class="addeducation text-decoration-none text-primary-c">ADD
-                        EDUCATION</a>
+                        class="addeducation text-decoration-none text-primary-c">ADD EDUCATION</a>
                 </div>
-                <p class="mb-0">Educational Detail</p>
+                <ng-container *ngIf="educationDataArr.length > 0">
+                    <ng-container *ngFor="let item of educationDataArr">
+                        <div>{{item.education}} <a href="javascript:void(0)" class="text-decoration-none"
+                                (click)="educationUpdatePopUp(item, addEducationModal)"> <i
+                                    class="fa fa-pencil"></i></a></div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="educationDataArr.length <= 0">
+                    <p class="mb-0">Add your Educational Detail</p>
+                </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">IT Skills </h5>
                     <a href="javascript:void(0)" (click)="itSkillsPopup(addItSkillsModal)"
-                        class="additskills text-decoration-none text-primary-c">ADD IT SKILLS
-                    </a>
+                        class="additskills text-decoration-none text-primary-c">ADD IT SKILLS </a>
                 </div>
-                <p class="mb-0">Specify detail about programming languages (such as java, Python, C/C++, Oracle, SQL
-                    etc), softwares (Microsoft Word, Excel, Tally etc) or any other software related Knowledge</p>
+                <ng-container *ngIf="ItSkillsDataArr.length > 0">
+                    <ng-container *ngFor="let item of ItSkillsDataArr">
+                        <div>{{item.itSkillName}} <a href="javascript:void(0)" class="text-decoration-none"
+                                (click)="itSkillsUpdatePopUp(item, addItSkillsModal)"> <i class="fa fa-pencil"></i> </a>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="ItSkillsDataArr.length <=0">
+                    <p class="mb-0">Specify detail about programming languages (such as java, Python, C/C++, Oracle, SQL
+                        etc), softwares (Microsoft Word, Excel, Tally etc) or any other software related Knowledge</p>
+                </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
@@ -172,8 +202,9 @@
                 </div>
                 <ng-container *ngIf="projectDataArr.length > 0">
                     <ng-container *ngFor="let item of projectDataArr">
-                        <div>{{item.detailsOfProject}} <a href="javascript:void(0)" class="text-decoration-none" (click)="projectUpdatePopUp(item, addProjectsModal)"><i class="fa fa-pencil"></i></a></div>
-                        
+                        <div>{{item.detailsOfProject}} <a href="javascript:void(0)" class="text-decoration-none"
+                                (click)="projectUpdatePopUp(item, addProjectsModal)"><i class="fa fa-pencil"></i></a>
+                        </div>
                     </ng-container>
                 </ng-container>
                 <ng-container *ngIf="projectDataArr.length <= 0">
@@ -183,53 +214,65 @@
             <div class="card shadow-lg mt-4 px-3 py-4">
                 <div class="d-flex justify-content-between">
                     <h5 class="text-dark">Profile Summary </h5>
-                    <a href="javascript:void(0)" class="addprofilesummary text-decoration-none text-primary-c">ADD
-                        PROFILE SUMMARY </a>
+                    <a href="javascript:void(0)" (click)="profileSummaryPopUp(addProfileSummaryModal)"
+                        class="addprofilesummary text-decoration-none text-primary-c">ADD PROFILE SUMMARY
+                    </a>
                 </div>
-                <p class="mb-0">Your profile summary should mention the highlight of your career and education, what
-                    your professional interest are, and what kind of a career you are looking for. Write a meaning full
-                    sunnary of more than 50 characters. </p>
+                <ng-container *ngIf="profileSummaryDataArr.length > 0">
+                    <ng-container *ngFor="let item of profileSummaryDataArr">
+                        <div>{{item.profileSummary}} <a href="javascript:void(0)" class="text-decoration-none"
+                                (click)="profileSummaryUpdatePopUp(item, addProfileSummaryModal)"> <i
+                                    class="fa fa-pencil"></i></a></div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="profileSummaryDataArr.length <= 0">
+                    <p class="mb-0">Your profile summary should mention the highlight of your career and education, what
+                        your professional interest are, and what kind of a career you are looking for. Write a meaning
+                        full
+                        sunnary of more than 50 characters. </p>
+                </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4 ">
                 <h5 class="text-dark">Accomplishments</h5>
                 <div class="d-flex justify-content-between mt-4">
                     <h6 class="text-dark">Online Profile </h6>
-                    <a href="javascript:void(0)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <a href="javascript:void(0)" (click)="onlineProfilePopUp(OnlineProfileModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <p class="mb-0">Add link to Online profile (e.g LinkedIn, Facebook etc) </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">Work Sample </h6>
-                    <a href="javascript:void(0)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <a href="javascript:void(0)" (click)="workSamplePopUp(WorkSampleModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <p class="mb-0">Add link to your Projects (e.g. Github links etc) </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">White Paper / Research Publication / Journal Entry </h6>
-                    <a href="javascript:void(0)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <a href="javascript:void(0)" (click)="researchPublicationPopUp(ResearchPublicationModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <p class="mb-0">Add link to your Online publications. </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">Presentation </h6>
-                    <a href="javascript:void(0)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <a href="javascript:void(0)" (click)="presentationPopUp(PresentationModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <p class="mb-0">Add link to your Online presentations (e.g. Slideshare presentation links etc) </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">Patent </h6>
-                    <a href="javascript:void(0)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <a href="javascript:void(0)" (click)="patentPopUp(PatentModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <p class="mb-0">Add details of Patents you have filed. </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">Certification</h6>
-                    <a href="javascript:void(0)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <a href="javascript:void(0)" (click)="certificationPopUp(CertificationModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <p class="mb-0">Add details of certifications you have achieved/completed </p>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
-                <h5 class="text-dark">Career Profile <a href="javascript:void(0)"><i class=" ps-2 fs-6 fa fa-pencil"
+                <h5 class="text-dark">Career Profile <a href="javascript:void(0)"
+                        (click)="careerProfilePopUp(AddCareerProfileModal)"><i class=" ps-2 fs-6 fa fa-pencil"
                             aria-hidden="true"></i></a> </h5>
                 <div class="d-flex justify-content-between">
                     <div class="col-md-6">
@@ -269,7 +312,8 @@
                 </div>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4">
-                <h5 class="text-dark">Personal Details <a href="javascript:void(0)"><i class=" ps-2 fs-6 fa fa-pencil"
+                <h5 class="text-dark">Personal Details <a href="javascript:void(0)"
+                        (click)="personalDetailPopUp(AddPersonalDetailModal)"><i class=" ps-2 fs-6 fa fa-pencil"
                             aria-hidden="true"></i></a> </h5>
                 <div class="d-flex justify-content-between">
                     <div class="col-md-6">
@@ -334,6 +378,43 @@
         </div>
     </div>
 </div>
+
+<!-- Modal :- ADD Key Skill-->
+<ng-template #addKeySkillModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="addKeySkillModal-basic-title">Key Skills</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="mt-1 px-5">
+        <p>Tell recruiters what you know or what you are known for e.g. Direct Marketing, Oracle, Java etc. We will send
+            you job recommendations based on these skills. Each skill is separated by a comma.</p>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="addKeySkillForm">
+            <label class="form-label">Key Skills</label>
+            <div class="form-control">
+                <div class="" *ngIf="keySkillsList.length > 0">
+                    <ng-container *ngFor="let item of keySkillsList; let i = index">
+                        <span class="badge p-2 me-2 my-1 bg-primary">{{item}} <a href="javascript:void(0)"
+                                class="text-decoration-none" (click)="removekeySkill(i)"><i
+                                    class="fa fa-close ps-2 text-dark"></i></a></span>
+                    </ng-container>
+                </div>
+                <input type="text" class="form-control key-skill-input p-3 mt-2 border-0"
+                    placeholder="Enter your area of Experience/Specilization" (keyup.enter)="addKeySkill($event)" formControlName="keySkill">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class=" text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" *ngIf="keySkillData.keySkillId == 0" class="btn btn-outline-dark" 
+        (click)="createKeySkillData()">Save</button>
+        <button type="button" *ngIf="keySkillData.keySkillId > 0" class="btn btn-outline-dark" 
+        (click)="updateKeySkillData()">Update</button>
+     
+    </div>
+</ng-template>
 
 <!-- Modal :- Add Employment-->
 <ng-template #addEmploymentModal let-modal>
@@ -549,8 +630,10 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class=" text-decoration-none fs-6 px-2" (click)="modal.close('Save click')">Cancel
         </a>
-        <button type="button" *ngIf="employmentData.employmentDetailId == 0" class="btn btn-primary" (click)="createEmploymentData()">Save</button>
-        <button type="button" *ngIf="employmentData.employmentDetailId > 0" class="btn btn-primary" (click)="updateEmploymentData()" >Update</button>
+        <button type="button" *ngIf="employmentData.employmentDetailId == 0" class="btn btn-primary"
+            (click)="createEmploymentData()">Save</button>
+        <button type="button" *ngIf="employmentData.employmentDetailId > 0" class="btn btn-primary"
+            (click)="updateEmploymentData()">Update</button>
     </div>
 </ng-template>
 
@@ -684,7 +767,7 @@
                         <label class="form-label text-dark" for="passingoutyear">Passing Out Year*</label>
                         <select class="form-control" formControlName="passingOutYear">
                             <option value="">Choose...</option>
-                            <option [value]="item" *ngFor="let item of passingOutYear" >{{item}}</option>
+                            <option [value]="item" *ngFor="let item of passingOutYear">{{item}}</option>
                         </select>
                     </div>
                     <div class="md-col-12 mt-3"
@@ -705,13 +788,13 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" *ngIf="educationData.educationalDetailId <= 0"
+        <button type="button" *ngIf="educationData.educationalDetailId == 0" class="btn btn-primary-c"
             (click)="createEducationData()">Save</button>
-        <button type="button" class="btn btn-primary-c" *ngIf="educationData.educationalDetailId > 0"
+        <button type="button" *ngIf="educationData.educationalDetailId > 0" class="btn btn-primary-c"
             (click)="updateEducationData()">Update</button>
-
     </div>
 </ng-template>
+
 
 <!-- Modal :- ADD IT SKILLS-->
 <ng-template #addItSkillsModal let-modal>
@@ -727,18 +810,20 @@
         <form [formGroup]="addItSkillsForm">
             <div class="col-md-12 py-2 mt-0 pe-4">
                 <label class="form-label text-dark">Skill / Software Name*</label>
-                <input class="form-control" type="text" placeholder="Skill / Software Name" formControlName="skillName">
+                <input class="form-control" type="text" placeholder="Skill / Software Name"
+                    formControlName="itSkillName">
             </div>
             <div class="col-md-12 row mt-3">
                 <div class="col-md-6 py-2">
                     <label class="form-label text-dark">Software Version</label>
-                    <input class="form-control" type="text" placeholder="Software Version" formControlName="softwareVersion">
+                    <input class="form-control" type="text" placeholder="Software Version"
+                        formControlName="softwareVersion">
                 </div>
                 <div class="col-md-6 py-2">
                     <label class="form-label text-dark">Last Used</label>
                     <select class="form-control" formControlName="lastUsed">
                         <option value="">Select..</option>
-                        <option [value]="item" *ngFor="let item of lastUsedItSkill" >{{item}}</option>
+                        <option [value]="item" *ngFor="let item of lastUsedItSkill">{{item}}</option>
                     </select>
                 </div>
             </div>
@@ -749,13 +834,13 @@
                 <div class="col-md-6">
                     <select class="form-control" formControlName="yearsExperienceItSkill">
                         <option value=""> in Years..</option>
-                        <option [value]="item" *ngFor="let item of experienceYearsValue" >{{item}} Year</option>
+                        <option [value]="item" *ngFor="let item of experienceYearsValue">{{item}} Year</option>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <select class="form-control" formControlName="monthExperienceItSkill">
                         <option value="">in Months..</option>
-                        <option [value]="item" *ngFor="let item of monthExperienceValue" >{{item}} Month</option>
+                        <option [value]="item" *ngFor="let item of monthExperienceValue">{{item}} Month</option>
                     </select>
                 </div>
             </div>
@@ -764,7 +849,10 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.c('Save click')">Save</button>
+        <button type="button" *ngIf="itSkillsData.itSkillId == 0" class="btn btn-primary-c"
+            (click)="createItSkillsData()">Save</button>
+        <button type="button" *ngIf="itSkillsData.itSkillId > 0" class="btn btn-primary-c"
+            (click)="updateItSkillsData()">Update</button>
     </div>
 </ng-template>
 
@@ -778,7 +866,8 @@
         <form [formGroup]="addProjectForm">
             <div class="col-md-12 py-2 mt-3 pe-4">
                 <label class="form-label text-dark">Project Title*</label>
-                <input class="form-control" type="text" placeholder="Enter Project Title" formControlName="projectTitle" >
+                <input class="form-control" type="text" placeholder="Enter Project Title"
+                    formControlName="projectTitle">
             </div>
             <div class="col-md-12 py-2 mt-3 pe-4">
                 <label class="form-label text-dark">Client*</label>
@@ -806,11 +895,11 @@
                 <div class="col-md-6">
                     <select class="form-control text-muted" formControlName="workedFromYears">
                         <option value="">Select Year..</option>
-                        <option [value]="item" *ngFor="let item of workedFromYrs" >{{item}}</option>
+                        <option [value]="item" *ngFor="let item of workedFromYrs">{{item}}</option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <select class="form-control text-muted" formControlName="workedFromMonth" >
+                    <select class="form-control text-muted" formControlName="workedFromMonth">
                         <option value="">Select Month..</option>
                         <option value="Jan">Jan</option>
                         <option value="Feb">Feb</option>
@@ -832,13 +921,13 @@
                     <label class="form-label text-dark">Worked Till*</label>
                 </div>
                 <div class="col-md-6">
-                    <select class="form-control" formControlName="workedTillYears" >
+                    <select class="form-control" formControlName="workedTillYears">
                         <option value=""> in Years..</option>
-                        <option [value]="item" *ngFor="let item of workedTillYrs" >{{item}}</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs">{{item}}</option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <select class="form-control text-muted" formControlName="workedTillMonth" >
+                    <select class="form-control text-muted" formControlName="workedTillMonth">
                         <option value="">Select Month..</option>
                         <option value="Jan">Jan</option>
                         <option value="Feb">Feb</option>
@@ -862,7 +951,8 @@
             </div>
             <div class="col-md-12 py-2 mt-3 pe-4">
                 <label class="form-label text-dark">Project Location</label>
-                <input class="form-control" type="text" placeholder="Enter Project Location" formControlName="projectLocation">
+                <input class="form-control" type="text" placeholder="Enter Project Location"
+                    formControlName="projectLocation">
             </div>
             <div class="col-md-12 mt-3 text-dark">
                 <div>
@@ -938,8 +1028,411 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" *ngIf="projectData.projectDetailId == 0" class="btn btn-primary-c" (click)="createProjectData()">Save</button>
-        <button type="button" *ngIf="projectData.projectDetailId > 0" class="btn btn-primary-c" (click)="updateProjectData()">Update</button>
+        <button type="button" *ngIf="projectData.projectDetailId == 0" class="btn btn-primary-c"
+            (click)="createProjectData()">Save</button>
+        <button type="button" *ngIf="projectData.projectDetailId > 0" class="btn btn-primary-c"
+            (click)="updateProjectData()">Update</button>
     </div>
 </ng-template>
 
+
+<!-- Modal :- ADD Profile Summary-->
+<ng-template #addProfileSummaryModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="addProfileSummaryModal-basic-title">Profile Summary</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="mt-1 px-5">
+        <p>Your Profile Summary should mention the highlights of your career and education, what your professional
+            interests are, and what kind
+            of a career you are looking for. Write a meaningful summary of more than 50 characters.</p>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="addProfileSummaryForm">
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Profile Summary*</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    (keyup)="charactersCount($event)" maxlength="1000" formControlName="profileSummary">
+            </textarea>
+                <p class="text-end">
+                    <small class="text-muted">1000 Character(s) Left</small>
+                </p>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" *ngIf="profileSummaryData.userId == 0" class="btn btn-outline-dark"
+            (click)="createProfileSummaryData()">Save</button>
+        <button type="button" *ngIf="profileSummaryData.userId > 0" class="btn btn-outline-dark"
+            (click)="updateProfileSummaryData()">Update</button>
+
+    </div>
+</ng-template>
+
+<!-- Modal :- Online Profile-->
+<ng-template #OnlineProfileModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="OnlineProfileModal-basic-title">Online Profile</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Social Profile*</label>
+                <input class="form-control" type="text" placeholder="Enter Social Profile Name" >
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">URL</label>
+                <input class="form-control" type="text" placeholder="Enter Social Profile URL">
+            </div>
+            
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- Work Sample-->
+<ng-template #WorkSampleModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="WorkSampleModal-basic-title">Work Sample</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Current Industry*</label>
+                <input class="form-control" type="text">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Department</label>
+                <input class="form-control" type="text" placeholder="">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- Research Publication-->
+<ng-template #ResearchPublicationModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="ResearchPublicationModal-basic-title">White Paper / Research Publication / Journal Entry</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Current Industry*</label>
+                <input class="form-control" type="text">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Department</label>
+                <input class="form-control" type="text" placeholder="">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- Presentation-->
+<ng-template #PresentationModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="PresentationModal-basic-title">Presentation</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Current Industry*</label>
+                <input class="form-control" type="text">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Department</label>
+                <input class="form-control" type="text" placeholder="">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- Patent-->
+<ng-template #PatentModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="PatentModal-basic-title">Patent</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Current Industry*</label>
+                <input class="form-control" type="text">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Department</label>
+                <input class="form-control" type="text" placeholder="">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- Certification-->
+<ng-template #CertificationModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="CertificationModal-basic-title">Patent</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Current Industry*</label>
+                <input class="form-control" type="text">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Department</label>
+                <input class="form-control" type="text" placeholder="">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+
+
+<!-- Modal :- ADD Career Profile-->
+<ng-template #AddCareerProfileModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="AddCareerProfileModal-basic-title">Career Profile</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="mt-1 px-5">
+        <p>This information will help the recruiters and Naukri know about your current job profile and also your
+            desired job criteria.
+            This will also help us personalize your job recommendations.</p>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-md-12 mb-3">
+                <label class="form-label text-dark">Current Industry*</label>
+                <input class="form-control" type="text">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Department</label>
+                <input class="form-control" type="text" placeholder="">
+            </div>
+            
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <div>
+                    <label class="form-label text-dark">Desired Job Type</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Permanent</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                    <label class="form-check-label" for="inlineCheckbox2">Contractual</label>
+                </div>
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <div>
+                    <label class="form-label text-dark">Desired Employment Type</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Full Time</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                    <label class="form-check-label" for="inlineCheckbox2">Part Time</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-3 text-dark">
+                <div>
+                    <label class="form-label text-dark" for="">Prefered Shift</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="preferedShift" id="inlineRadio1" value="1">
+                    <label class="form-check-label" for="inlineRadio1">Day</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="preferedShift" id="inlineRadio2" value="2">
+                    <label class="form-check-label" for="inlineRadio2">Night</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="preferedShift" id="inlineRadio3" value="3">
+                    <label class="form-check-label" for="inlineRadio3">Flexible</label>
+                </div>
+            </div>
+            <div class="col-md-12 py-2 mt-2">
+                <label class="form-label text-dark">Prefered Worked Location (Max 10)</label>
+                <input class="form-control" type="text" placeholder="Tell us your location prefered to work">
+            </div>
+            <div class="col-md-12 py-2 mt-2">
+                <div>
+                    <label class="form-label text-dark">Expected Salary</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="expectedSalary" id="inlineRadio1"
+                        formControlName="currencyType" value="true">
+                    <label class="form-check-label text-dark" for="inlineRadio1">Indian Rupees</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="expectedSalary" id="inlineRadio2"
+                        formControlName="currencyType" value="false">
+                    <label class="form-check-label text-dark" for="inlineRadio2">US Dollar</label>
+                </div>
+            </div>
+            <div class="col-md-12 row">
+                <div class="form-group col-md-4">
+                    <label for="inputLacs">in Lacs</label>
+                    <select id="inputState" class="form-control">
+                        <option value="">Choose...</option>
+                        <option value="0">0 Lacs</option>
+                        <option value="100000">1 Lacs</option>
+                        <option value="200000">2 Lacs</option>
+                        <option value="300000">3 Lacs</option>
+                        <option value="400000">4 Lacs</option>
+                        <option value="500000">5 Lacs</option>
+                        <option value="600000">6 Lacs</option>
+                        <option value="700000">7 Lacs</option>
+                        <option value="800000">8 Lacs</option>
+                        <option value="900000">9 Lacs</option>
+                        <option value="1000000">10 Lacs</option>
+                        <option value="1100000">11 Lacs</option>
+                        <option value="1200000">12 Lacs</option>
+                        <option value="1300000">13 Lacs</option>
+                        <option value="1400000">14 Lacs</option>
+                        <option value="1500000">15 Lacs</option>
+                        <option value="1600000">16 Lacs</option>
+                        <option value="1700000">17 Lacs</option>
+                        <option value="1800000">18 Lacs</option>
+                        <option value="1900000">19 Lacs</option>
+                        <option value="2000000">20 Lacs</option>
+                        <option value="2100000">21 Lacs</option>
+                        <option value="2200000">22 Lacs</option>
+                        <option value="2300000">23 Lacs</option>
+                        <option value="2400000">24 Lacs</option>
+                        <option value="2500000">25 Lacs</option>
+                        <option value="2600000">26 Lacs</option>
+                        <option value="2700000">27 Lacs</option>
+                        <option value="2800000">28 Lacs</option>
+                        <option value="2900000">29 Lacs</option>
+                        <option value="3000000">30 Lacs</option>
+                        <option value="3100000">31 Lacs</option>
+                        <option value="3200000">32 Lacs</option>
+                        <option value="3300000">33 Lacs</option>
+                        <option value="3400000">34 Lacs</option>
+                        <option value="3500000">35 Lacs</option>
+                        <option value="3600000">36 Lacs</option>
+                        <option value="3700000">37 Lacs</option>
+                        <option value="3800000">38 Lacs</option>
+                        <option value="3900000">39 Lacs</option>
+                        <option value="4000000">40 Lacs</option>
+                        <option value="4100000">41 Lacs</option>
+                        <option value="4200000">42 Lacs</option>
+                        <option value="4300000">43 Lacs</option>
+                        <option value="4400000">44 Lacs</option>
+                        <option value="4500000">45 Lacs</option>
+                        <option value="4600000">46 Lacs</option>
+                        <option value="4700000">47 Lacs</option>
+                        <option value="4800000">48 Lacs</option>
+                        <option value="4900000">49 Lacs</option>
+                        <option value="5000000">50 Lacs</option>
+                        <option value="5000001">50+ Lacs</option>
+                        <option value="5500001">55+ Lacs</option>
+                        <option value="6000001">60+ Lacs</option>
+                        <option value="6500001">65+ Lacs</option>
+                        <option value="7000001">70+ Lacs</option>
+                        <option value="7500001">75+ Lacs</option>
+                        <option value="8000001">80+ Lacs</option>
+                        <option value="8500001">85+ Lacs</option>
+                        <option value="9000001">90+ Lacs</option>
+                        <option value="9500001">95+ Lacs</option>
+                        <option value="10000001">100+ Lacs</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputThousand">in Thousand</label>
+                    <select id="inputState" class="form-control">
+                        <option value="">Choose...</option>
+                        <option value="0">0 Thousand</option>
+                        <option value="5">5 Thousand</option>
+                        <option value="10">10 Thousand</option>
+                        <option value="15">15 Thousand</option>
+                        <option value="20">20 Thousand</option>
+                        <option value="25">25 Thousand</option>
+                        <option value="30">30 Thousand</option>
+                        <option value="35">35 Thousand</option>
+                        <option value="40">40 Thousand</option>
+                        <option value="45">45 Thousand</option>
+                        <option value="50">50 Thousand</option>
+                        <option value="55">55 Thousand</option>
+                        <option value="60">60 Thousand</option>
+                        <option value="65">65 Thousand</option>
+                        <option value="70">70 Thousand</option>
+                        <option value="75">75 Thousand</option>
+                        <option value="80">80 Thousand</option>
+                        <option value="85">85 Thousand</option>
+                        <option value="90">90 Thousand</option>
+                        <option value="95">95 Thousand</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
+            (click)="modal.close('Save click')">Cancel</a>
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+<!-- Modal :- ADD Personal Detail-->
+<ng-template #AddPersonalDetailModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-dark" id="AddPersonalDetailModal-basic-title">Personal Detail</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="mb-3">
+                <label for="dateOfBirth">Date of birth</label>
+                <div class="input-group">
+                    <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                        #dp="ngbDatepicker">
+                    <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>

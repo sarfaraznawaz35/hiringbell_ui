@@ -1,3 +1,4 @@
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms'
 // import * as $ from 'JQuery';
@@ -15,21 +16,32 @@ import { autoCompleteModal, IautocompleteComponent } from '../iautocomplete/iaut
 })
 export class UserprofileComponent implements OnInit {
   model: NgbDateStruct;
+  keySkillsList: Array<any> = [];
   modelWorkedTill: NgbDateStruct;
   isCurrentCompany:boolean=true;
+  addKeySkillForm:FormGroup;
   addEmploymentForm:FormGroup;
   addEducationForm:FormGroup;
   addProjectForm:FormGroup;
   addItSkillsForm:FormGroup;
+  addProfileSummaryForm:FormGroup;
+  keySkillData:keySkill = new keySkill();
+  keySkillId: number=0;
+  keySkillDataArr: Array <keySkill> = [];
   employmentDetailId: number=0;
   employmentData:EmploymentDetail=new EmploymentDetail();
   employmentDataArr: Array <EmploymentDetail> = [];
   educationData:EducationalDetail=new EducationalDetail();
+  educationDataArr: Array <EducationalDetail> = [];
   projectData:ProjectDetail=new ProjectDetail();
   projectDetailId: number=0;
   projectDataArr: Array <ProjectDetail> = [];
   itSkillsData: ItSkills=new ItSkills();
+  ItSkillsDataArr: Array <ItSkills> = [];
   educationalDetailId: number=0;
+  itSkillId: number=0;
+  profileSummaryData: ProfileSummary=new ProfileSummary();
+  profileSummaryDataArr: Array<ProfileSummary> = []; 
   isServingNoticePeriod: boolean=false;
   education: autoCompleteModal = null;
   course: autoCompleteModal=null;
@@ -61,10 +73,20 @@ export class UserprofileComponent implements OnInit {
               private http:AjaxService,
               private nav:iNavigation) { }
   
-   private emloymentModalReference;
+  private keySkillModalReference; 
+  private emloymentModalReference;
    private educationModalReference;
    private itSkillsModalReference;
    private projectsModalReference;
+   private profileSummaryReference;
+   private onlineProfileReference;
+   private workSampleReference;
+   private researchPublicationReference;
+   private presentationReferenc;
+   private patentReference;
+   private certificationReference;
+   private careerProfileReference;
+   private personalDetailReference;
    
 
   ngOnInit(): void {
@@ -126,17 +148,30 @@ export class UserprofileComponent implements OnInit {
     if(data){
       this.employmentDetailId = data.userId;
       this.userId =  data.userId;
+      this.loadAllData();
       this.initAddEmploymentForm();
-      this.loadEmploymentData();
       this.initAddEducationForm();
-      this.loadEducationData();
-      this.loadPojectData();
       this.initAddProjectForm();
+      this.initAddProfileSummaryForm();
+      this.initAddKeySkillForm();
     }
     else
     ErrorToast("please login again..")
+    
   }
 
+  createKeySkillData(){
+    let value = this.addKeySkillForm.value;
+    value.keySkillData = '';
+    value.keySkillData=this.keySkillsList;
+    console.log(value);
+    this.http.post(`KeySkill/addKeySkill/${this.userId}`, value).then(Response => {
+      if(Response.responseBody){
+        this.keySkillData = Response.responseBody;
+        Toast("Record inserted");
+      }
+    })
+  }
 
   createEmploymentData(){
     let finalAmount = Number(this.addEmploymentForm.get('inLacs').value) + Number(this.addEmploymentForm.get('inThousand').value);
@@ -145,7 +180,6 @@ export class UserprofileComponent implements OnInit {
     this.http.post("EmploymentDetail/addEmploymentDetail", value).then(Response => {
       if(Response.responseBody){
         this.employmentData=Response.responseBody;
-        this.initAddEmploymentForm();
         Toast("Record found");
         
       }
@@ -163,6 +197,17 @@ export class UserprofileComponent implements OnInit {
     })
   }
 
+  createItSkillsData(){
+    let value = this.addItSkillsForm.value;
+    console.log(value);
+    this.http.post("ItSkills/addItSkill", value).then(Response =>{
+      if(Response.responseBody){
+        this.itSkillsData=Response.responseBody;
+        Toast("Record inserted");
+      }
+    })
+  }
+
   createProjectData(){
     let value = this.addProjectForm.value;
     this.http.post("ProjectDetail/addProjectDetail", value).then(Response => {
@@ -170,6 +215,16 @@ export class UserprofileComponent implements OnInit {
         this.projectData=Response.responseBody;
         Toast("Record inserted");
 
+      }
+    })
+  }
+
+  createProfileSummaryData(){
+    let value = this.addProfileSummaryForm.value;
+    this.http.post("ProfileSummary/addProfileSummary", value).then(Response => {
+      if(Response.responseBody){
+        this.profileSummaryData = Response.responseBody;
+        Toast("Record inserted")
       }
     })
   }
@@ -231,13 +286,7 @@ export class UserprofileComponent implements OnInit {
       }
  
     }
-
-  loadEmploymentData(){
-    if(this.userId > 0){
-      this.http.get(`EmploymentDetail/getByUserId/${this.userId}`).then(response =>{
-        if(response.responseBody){
-          this.employmentDataArr=response.responseBody;
-          console.log(this.employmentDataArr);
+  
           // this.initAddEmploymentForm();
           // if(this.employmentData.currentAnnualSalary>0){
           //               let income = this.employmentData.currentAnnualSalary;
@@ -250,35 +299,25 @@ export class UserprofileComponent implements OnInit {
           //             }          
           // let date = new Date(this.employmentData.joiningDate);
           // this.model = { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear()};
-          Toast("Record found");
-        }
-      })
-    }
-  }
-
-  loadEducationData(){
-    this.educationalDetailId=1;
-    if(this.educationalDetailId>0){
-      this.http.get(`EducationalDetail/getById/${this.educationalDetailId}`).then(Response => {
-        if(Response.responseBody){
-          this.educationData=Response.responseBody;
-          console.log(this.educationData);
-          this.initAddEducationForm();
-        }
-      })
-    }
-  }
   
-  loadPojectData(){
-    this.isPageReady = false;
+
+  loadAllData(){
+    this.isPageReady=false;
     if(this.userId>0){
-      this.http.get(`ProjectDetail/getByUserId/${this.userId}`).then(Response => {
+      this.http.get(`CommonController/getLoadAllDetailByUserId/${this.userId}`).then(Response => {
         if(Response.responseBody){
-          let data = Response.responseBody;
-          for (let i = 0; i < data.length; i++) {
-            this.projectDataArr.push(data[i]);
-          }
-          console.log(this.projectDataArr);
+          this.keySkillData = Response.responseBody.keySkillResult;
+          this.employmentDataArr = Response.responseBody.employmentDetailResult;
+          this.educationDataArr = Response.responseBody.educationDetailResult;
+          this.projectDataArr = Response.responseBody.projectDetailResult;
+          this.ItSkillsDataArr = Response.responseBody.itSkillsResult;
+          this.profileSummaryDataArr = Response.responseBody.profileSummaryResult;
+          this.initAddKeySkillForm();
+          this.initAddEmploymentForm();
+          this.initAddEducationForm();
+          this.initAddProjectForm();
+          this.initAddItSkillForm();
+          this.initAddProfileSummaryForm();
           this.isPageReady = true;
         }
       })
@@ -305,15 +344,36 @@ loadBoard(){
   })
 }
 
+keySkillUpdatePopUp(item: keySkill, content: any){
+  if(item != null){
+    this.keySkillId = item.keySkillId;
+    this.keySkillData = item;
+    this.initAddKeySkillForm();
+    this.keySkillModalReference = this.modalService.open(content,{ size: 'lg' });
+  }
+}
+
 employmentUpdatePopUp(item: EmploymentDetail, content: any){
   if(item != null){
     this.employmentDetailId = item.employmentDetailId;
     this.employmentData = item;
     this.initAddEmploymentForm();
-    this.emloymentModalReference = this.modalService.open(content)
     this.emloymentModalReference = this.modalService.open(content,{ size: 'lg' });
   }
 
+}
+
+updateKeySkillData(){
+  let value = this.addKeySkillForm.value;
+  value.keySkill = '';
+  value.keySkillData=this.keySkillsList;
+  this.http.put(`KeySkill/ByKeySkillId/${this.keySkillData.keySkillId}`, value).then(res => {
+    if(res.responseBody){
+      this.keySkillData = res.responseBody;
+      console.log(this.keySkillData);
+      this.initAddKeySkillForm();
+    }
+  })
 }
 
 updateEmploymentData(){
@@ -328,7 +388,6 @@ updateEmploymentData(){
 }
 
   updateEducationData(){
-    this.educationalDetailId=1;
     let value = this.addEmploymentForm.value;
     this.http.put(`EducationalDetail/updateEducationalDetail/${this.educationalDetailId}`, value).then(res => {
       if(res.responseBody){
@@ -339,13 +398,16 @@ updateEmploymentData(){
     })
   }
 
-  projectUpdatePopUp(item: ProjectDetail, content: any) {
-    if (item != null) {
-      this.projectDetailId = item.projectDetailId;
-      this.projectData = item;
-      this.initAddProjectForm();
-      this.projectsModalReference = this.modalService.open(content,{size: 'lg'});
-    }
+  updateItSkillsData(){
+    let value = this.addItSkillsForm.value;
+    this.http.put(`ItSkills/updateItSkills/${this.itSkillId}`, value).then(res => {
+      if(res.responseBody){
+        this.itSkillsData=res.responseBody;
+        console.log(this.itSkillsData);
+        this.initAddItSkillForm();
+      }
+    })
+
   }
 
   updateProjectData(){
@@ -359,6 +421,79 @@ updateEmploymentData(){
    })
   }
 
+updateProfileSummaryData(){
+  let value = this.addProfileSummaryForm.value;
+  this.http.put(`ProfileSummary/updateByUserId/${this.userId}`, value).then(res => {
+    if(res.responseBody){
+      this.profileSummaryData = res.responseBody;
+      console.log(this.profileSummaryData);
+      this.initAddProfileSummaryForm();
+    }
+  })
+}
+
+addKeySkill(e: any) {
+  let value = e.target.value;
+  if (value) {
+    this.keySkillsList.push(value);
+    e.target.value = '';
+  }
+}
+
+removekeySkill(index: number) {
+  if (index > -1) {
+    this.keySkillsList.splice(index, 1);
+  }
+}
+
+charactersCount(e: any) {
+  let target = e.target;
+  let maxLength = target.getAttribute('maxlength');
+  let currentLength = target.value.length;
+  target.nextElementSibling.innerHTML = maxLength - currentLength + " " + "Character(s) Left";
+}
+
+  educationUpdatePopUp(item: EducationalDetail, content: any){
+    if(item != null){
+      this.educationalDetailId = item.educationalDetailId;
+      this.educationData = item;
+      this.initAddEducationForm();
+      this.educationModalReference = this.modalService.open(content,{ size: 'lg'});
+    }
+  }
+
+  itSkillsUpdatePopUp(item: ItSkills, content: any){
+    if(item != null){
+      this.itSkillId = item.itSkillId;
+      this.itSkillsData = item;
+      this.initAddItSkillForm();
+      this.itSkillsModalReference = this.modalService.open(content,{size: 'lg'});
+
+    }
+
+  }
+
+
+  projectUpdatePopUp(item: ProjectDetail, content: any) {
+    if (item != null) {
+      this.projectDetailId = item.projectDetailId;
+      this.projectData = item;
+      this.initAddProjectForm();
+      this.projectsModalReference = this.modalService.open(content,{size: 'lg'});
+    }
+  }
+
+  profileSummaryUpdatePopUp(item: ProfileSummary, content: any){
+    if(item != null){
+      this.userId = item.userId;
+      this.profileSummaryData = item;
+      this.initAddProfileSummaryForm();
+      this.profileSummaryReference = this.modalService.open(content,{size: 'lg'});
+    }
+  }
+
+  
+
   changeNoticePeriod(e: any){
     let value = e.target.value;
     if(value=='0')
@@ -367,6 +502,16 @@ updateEmploymentData(){
       this.isServingNoticePeriod=false;
   }
 
+  keySkillPopUp(content, item:any){
+    if(item && item.keySkillId > 0) {
+      this.keySkillData = item;
+      this.keySkillsList = this.keySkillData.keySkillData;
+    }
+    else 
+      this.keySkillData = new keySkill();
+    this.initAddKeySkillForm();
+    this.keySkillModalReference = this.modalService.open(content, {size: 'lg'});
+  }
 
   employementPopup(content) {
     // $('#addEmployment').show();
@@ -386,12 +531,51 @@ updateEmploymentData(){
   }
 
   itSkillsPopup(content){
+    this.itSkillsData = new ItSkills();
+    this.itSkillsData.userId = this.userId;
+    this.itSkillsData.itSkillId = 0;
+    this.initAddItSkillForm();
     this.itSkillsModalReference = this.modalService.open(content,{size: 'lg'});
   }
   projectsPopup(content){
     this.projectData = new ProjectDetail();
     this.initAddProjectForm();
     this.projectsModalReference = this.modalService.open(content,{size: 'lg'});
+  }
+  profileSummaryPopUp(content){
+    this.profileSummaryReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  onlineProfilePopUp(content){
+    this.onlineProfileReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  workSamplePopUp(content){
+    this.workSampleReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  researchPublicationPopUp(content){
+    this.researchPublicationReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  presentationPopUp(content){
+    this.presentationReferenc = this.modalService.open(content,{size: 'lg'});
+  }
+
+  patentPopUp(content){
+    this.patentReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  certificationPopUp(content){
+    this.certificationReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  careerProfilePopUp(content){
+    this.careerProfileReference = this.modalService.open(content,{size: 'lg'});
+  }
+
+  personalDetailPopUp(content){
+    this.personalDetailReference = this.modalService.open(content,{size: 'lg'});
   }
 
   onDateSelection(e: NgbDateStruct) {
@@ -414,6 +598,15 @@ updateEmploymentData(){
       this.isCurrentCompany = true;
     else
       this.isCurrentCompany = false;
+  }
+
+  initAddKeySkillForm(){
+    this.addKeySkillForm=this.fb.group({
+      keySkillId: new FormControl(this.keySkillData.keySkillId),
+      userId: new FormControl(this.userId),
+      keySkill: new FormControl('')
+
+    })
   }
 
   initAddEmploymentForm(){
@@ -490,6 +683,13 @@ updateEmploymentData(){
     })
   }
 
+  initAddProfileSummaryForm(){
+    this.addProfileSummaryForm=this.fb.group({
+      userId: new FormControl(this.profileSummaryData.userId),
+      profileSummary: new FormControl(this.profileSummaryData.profileSummary)
+    })
+  }
+
 }
 
 class EmploymentDetail {
@@ -516,8 +716,8 @@ class EducationalDetail{
   userId: number=0;
   education: number=null;
   board: number=null;
-  schoolMedium: number=null;
-  totalMarks: number=null;
+  schoolMedium: String='';
+  totalMarks: String='';
   englishMarks: number=null;
   mathsMarks: number=null;
   course: number=null;
@@ -527,7 +727,7 @@ class EducationalDetail{
   universityInstitute: String='';
   courseType: number=null;
   passingOutYear: number=null;
-  gradingSystem: number=null;
+  gradingSystem: String='';
 
 }
 
@@ -559,4 +759,17 @@ class ItSkills{
   lastUsed: number=null;
   yearsExperienceItSkill: number=null;
   monthExperienceItSkill: number=null;
+}
+
+class ProfileSummary{
+  userId: number=null;
+  profileSummary: String='';
+
+}
+
+class keySkill{
+  keySkillId: number = 0;
+  userId: number = 0;
+  keySkillData: Array<String> = [];
+  keySkill: String='';
 }
