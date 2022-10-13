@@ -1,4 +1,4 @@
-<div class="container bg-white px-5 my-4">
+<div class="container bg-white px-5 my-4" >
     <div class="profile-header shadow-lg row text-white mt-2 ms-3 me-0">
         <div class="col-md-1">
             <div class="row col-md-12 d-flex align-items-center justify-content-center ps-2">
@@ -229,7 +229,7 @@
                     <p class="mb-0">Your profile summary should mention the highlight of your career and education, what
                         your professional interest are, and what kind of a career you are looking for. Write a meaning
                         full
-                        sunnary of more than 50 characters. </p>
+                        summary of more than 50 characters. </p>
                 </ng-container>
             </div>
             <div class="card shadow-lg mt-4 px-3 py-4 ">
@@ -238,7 +238,16 @@
                     <h6 class="text-dark">Online Profile </h6>
                     <a href="javascript:void(0)" (click)="onlineProfilePopUp(OnlineProfileModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
-                <p class="mb-0">Add link to Online profile (e.g LinkedIn, Facebook etc) </p>
+                <ng-container *ngIf = "onlineProfileDataArr.length > 0">
+                    <ng-container *ngFor="let item of onlineProfileDataArr">
+                        <div>{{item.socialProfile}} <a href="javascript:void(0)" class="text-decoration-none" 
+                            (click)="onlineProfileUpdatePopUp(item, OnlineProfileModal)"> <i class="fa fa-pencil" ></i> </a> 
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="onlineProfileDataArr.length <= 0" >
+                    <p class="mb-0">Add link to Online profile (e.g LinkedIn, Facebook etc) </p>
+                </ng-container>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">Work Sample </h6>
@@ -1073,19 +1082,33 @@
 
 <!-- Modal :- Online Profile-->
 <ng-template #OnlineProfileModal let-modal>
-    <div class="modal-header">
+    <div class="modal-header px-5">
         <h4 class="modal-title text-dark" id="OnlineProfileModal-basic-title">Online Profile</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-        <form>
-            <div class="col-md-12 mb-3">
+    <div class="mt-1 px-5">
+        <p>
+            Add links to your social profiles (e.g. Linkedin profile, Facebook profile, etc.).
+        </p>
+    </div>
+    <div class="modal-body px-5 mt-0 py-2">
+        <form [formGroup]="onlineProfileForm">
+            <div class="col-md-12 py-2 mt-2 pe-4">
                 <label class="form-label text-dark">Social Profile*</label>
-                <input class="form-control" type="text" placeholder="Enter Social Profile Name" >
+                <input class="form-control" type="text" placeholder="Enter Social Profile Name" formControlName="socialProfile">
             </div>
             <div class="col-md-12 py-2 mt-2 pe-4">
                 <label class="form-label text-dark">URL</label>
-                <input class="form-control" type="text" placeholder="Enter Social Profile URL">
+                <input class="form-control" type="text" placeholder="URL" formControlName="url">
+            </div>
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Description</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    (keyup)="charactersCount($event)" maxlength="500" formControlName="description" >
+            </textarea>
+                <p class="text-end">
+                    <small class="text-muted">500 Character(s) Left</small>
+                </p>
             </div>
             
         </form>
@@ -1093,7 +1116,10 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+        <button type="button" *ngIf="onlineProfileData.userId == 0" class="btn btn-primary-c" 
+        (click)="createOnlineProfileData()">Save</button>
+        <button type="button" *ngIf="onlineProfileData.userId > 0" class="btn btn-primary-c" 
+        (click)="updateOnlineProfileData()">Update</button>
     </div>
 </ng-template>
 
@@ -1103,15 +1129,91 @@
         <h4 class="modal-title text-dark" id="WorkSampleModal-basic-title">Work Sample</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-        <form>
-            <div class="col-md-12 mb-3">
-                <label class="form-label text-dark">Current Industry*</label>
-                <input class="form-control" type="text">
+    <div class="mt-1 px-5">
+        <p>
+            Add links to your projects (e.g. Github links, etc.).
+        </p>
+    </div>
+    <div class="modal-body px-5 mt-0 py-2">
+        <form [formGroup]="workSampleForm">
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Work Title*</label>
+                <input class="form-control" type="text" placeholder="Work Title" formControlName="workTitle">
             </div>
             <div class="col-md-12 py-2 mt-2 pe-4">
-                <label class="form-label text-dark">Department</label>
-                <input class="form-control" type="text" placeholder="">
+                <label class="form-label text-dark">URL</label>
+                <input class="form-control" type="text" placeholder="URL" formControlName="urlWorkSample">
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Duration from*</label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="yearDurationFrom" >
+                        <option value="">Select Year..</option>
+                        <option [value]="item" *ngFor="let item of workedFromYrs">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="monthDurationFrom">
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Duration To</label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="yearDurationTo" >
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="monthDurationTo" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+              <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked formControlName="isCurrentWorking">
+                <label class="form-check-label text-dark" for="flexCheckChecked">
+                  I am currently working on this
+                </label>
+              </div>
+              <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Description</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    (keyup)="charactersCount($event)" maxlength="500" formControl="descriptionWorkSample">
+            </textarea>
+                <p class="text-end">
+                    <small class="text-muted">500 Character(s) Left</small>
+                </p>
             </div>
         </form>
     </div>

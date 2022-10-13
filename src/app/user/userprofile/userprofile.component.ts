@@ -25,6 +25,8 @@ export class UserprofileComponent implements OnInit {
   addProjectForm:FormGroup;
   addItSkillsForm:FormGroup;
   addProfileSummaryForm:FormGroup;
+  onlineProfileForm:FormGroup;
+  workSampleForm: FormGroup;
   keySkillData:keySkill = new keySkill();
   keySkillId: number=0;
   keySkillDataArr: Array <keySkill> = [];
@@ -41,7 +43,11 @@ export class UserprofileComponent implements OnInit {
   educationalDetailId: number=0;
   itSkillId: number=0;
   profileSummaryData: ProfileSummary=new ProfileSummary();
-  profileSummaryDataArr: Array<ProfileSummary> = []; 
+  profileSummaryDataArr: Array<ProfileSummary> = [];
+  onlineProfileData: OnlineProfile=new OnlineProfile();
+  onlineProfileId: number=0;
+  onlineProfileDataArr: Array<OnlineProfile> = [];
+  workSampleData: WorkSample = new WorkSample();
   isServingNoticePeriod: boolean=false;
   education: autoCompleteModal = null;
   course: autoCompleteModal=null;
@@ -154,6 +160,7 @@ export class UserprofileComponent implements OnInit {
       this.initAddProjectForm();
       this.initAddProfileSummaryForm();
       this.initAddKeySkillForm();
+      this.initOnlineProfileForm();
     }
     else
     ErrorToast("please login again..")
@@ -227,6 +234,17 @@ export class UserprofileComponent implements OnInit {
         Toast("Record inserted")
       }
     })
+  }
+
+  createOnlineProfileData(){
+    let value = this.onlineProfileForm.value;
+    this.http.post("OnlineProfile/addOnlineProfile", value).then(Response => {
+      if(Response.responseBody){
+        this.profileSummaryData = Response.responseBody;
+        Toast("Record inserted")
+      }
+    })
+
   }
 
 
@@ -312,12 +330,14 @@ export class UserprofileComponent implements OnInit {
           this.projectDataArr = Response.responseBody.projectDetailResult;
           this.ItSkillsDataArr = Response.responseBody.itSkillsResult;
           this.profileSummaryDataArr = Response.responseBody.profileSummaryResult;
+          this.onlineProfileDataArr = Response.responseBody.onlineProfileResult;
           this.initAddKeySkillForm();
           this.initAddEmploymentForm();
           this.initAddEducationForm();
           this.initAddProjectForm();
           this.initAddItSkillForm();
           this.initAddProfileSummaryForm();
+          this.initOnlineProfileForm();
           this.isPageReady = true;
         }
       })
@@ -432,6 +452,17 @@ updateProfileSummaryData(){
   })
 }
 
+updateOnlineProfileData(){
+  let value = this.onlineProfileForm.value;
+  this.http.put(`OnlineProfile/updateOnlineProfile/${this.onlineProfileId}`, value).then(res =>{
+    if(res.responseBody){
+      this.onlineProfileData = res.responseBody;
+      console.log(this.onlineProfileData);
+      this.initOnlineProfileForm();
+    }
+  })
+}
+
 addKeySkill(e: any) {
   let value = e.target.value;
   if (value) {
@@ -452,6 +483,7 @@ charactersCount(e: any) {
   let currentLength = target.value.length;
   target.nextElementSibling.innerHTML = maxLength - currentLength + " " + "Character(s) Left";
 }
+
 
   educationUpdatePopUp(item: EducationalDetail, content: any){
     if(item != null){
@@ -492,7 +524,15 @@ charactersCount(e: any) {
     }
   }
 
-  
+  onlineProfileUpdatePopUp( item: OnlineProfile, content: any){
+    if(item != null){
+      this.userId = item.userId;
+      this.onlineProfileId=item.onlineProfileId;
+      this.onlineProfileData = item;
+      this.initOnlineProfileForm();
+      this.onlineProfileReference = this.modalService.open(content,{size: 'lg'});
+    }
+  }
 
   changeNoticePeriod(e: any){
     let value = e.target.value;
@@ -690,6 +730,33 @@ charactersCount(e: any) {
     })
   }
 
+  initOnlineProfileForm(){
+    this.onlineProfileForm = this.fb.group({
+      onlineProfileId: new FormControl(this.onlineProfileData.onlineProfileId),
+      userId: new FormControl(this.onlineProfileData.userId),
+      socialProfile: new FormControl(this.onlineProfileData.socialProfile),
+      url: new FormControl(this.onlineProfileData.url),
+      description: new FormControl(this.onlineProfileData.description)
+    })
+  }
+
+  initWorkSampleForm(){
+    this.workSampleForm = this.fb.group({
+      workSampleId: new FormControl(this.workSampleData.workSampleId),
+      userId: new FormControl(this.workSampleData.userId),
+      workTitle: new FormControl(this.workSampleData.workTitle),
+      urlWorkSample: new FormControl(this.workSampleData.urlWorkSample),
+      yearDurationFrom: new FormControl(this.workSampleData.yearDurationFrom),
+      monthDurationFrom: new FormControl(this.workSampleData.monthDurationFrom),
+      yearDurationTo: new FormControl(this.workSampleData.yearDurationTo),
+      monthDurationTo: new FormControl(this.workSampleData.monthDurationTo),
+      isCurrentWorking: new FormControl(this.workSampleData.isCurrentWorking),
+      descriptionWorkSample: new FormControl(this.workSampleData.descriptionWorkSample)
+
+    })
+
+  }
+
 }
 
 class EmploymentDetail {
@@ -772,4 +839,27 @@ class keySkill{
   userId: number = 0;
   keySkillData: Array<String> = [];
   keySkill: String='';
+}
+
+class OnlineProfile{
+  onlineProfileId: number = 0;
+  userId: number = 0;
+  socialProfile: String='';
+  url: String='';
+  description: String='';
+
+}
+
+class WorkSample{
+  workSampleId: number = 0;
+  userId: number = 0;
+  workTitle: String = '';
+  urlWorkSample: String = '';
+  yearDurationFrom: number = 0;
+  monthDurationFrom: String = '';
+  yearDurationTo: number = 0;
+  monthDurationTo: String = '';
+  isCurrentWorking: boolean = false;
+  descriptionWorkSample: String = '';
+
 }
