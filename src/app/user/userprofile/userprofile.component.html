@@ -253,18 +253,38 @@
                     <h6 class="text-dark">Work Sample </h6>
                     <a href="javascript:void(0)" (click)="workSamplePopUp(WorkSampleModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
+                <ng-container *ngIf="workSampleDataArr.length > 0">
+                    <ng-container *ngFor="let item of workSampleDataArr" >
+                        <div>{{item.workTitle}} <a href="javascript:void(0)" class="text-decoration-none"
+                            (click)="workSampleUpdatePopUp(item, WorkSampleModal)"> <i class="fa fa-pencil" ></i> </a> 
+                        </div>
+                    </ng-container>
+                </ng-container>
                 <p class="mb-0">Add link to your Projects (e.g. Github links etc) </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">White Paper / Research Publication / Journal Entry </h6>
                     <a href="javascript:void(0)" (click)="researchPublicationPopUp(ResearchPublicationModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
+                <ng-container *ngIf="researchPublicationDataArr.length > 0">
+                    <ng-container *ngFor="let item of researchPublicationDataArr" >
+                        <div>{{item.titleResearchPublication}} <a href="javascript:void(0)" class="text-decoration-none"
+                            (click)="researchPublicationUpdatePopUp(item, ResearchPublicationModal)"> <i class="fa fa-pencil"></i> </a> 
+                        </div>
+                    </ng-container>
+                </ng-container>
                 <p class="mb-0">Add link to your Online publications. </p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h6 class="text-dark">Presentation </h6>
                     <a href="javascript:void(0)" (click)="presentationPopUp(PresentationModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
+                <ng-container *ngIf="presentationDataArr.length > 0">
+                    <ng-container *ngFor="let item of presentationDataArr">
+                        <div>{{item.presentationTitle}} <a href="javascript:void(0)" class="text-decoration-none"
+                            (click)="presentationUpdatePopUp(item, PresentationModal)"> <i class="fa fa-pencil"></i> </a> </div>
+                    </ng-container>
+                </ng-container>
                 <p class="mb-0">Add link to your Online presentations (e.g. Slideshare presentation links etc) </p>
                 <hr>
                 <div class="d-flex justify-content-between">
@@ -1201,7 +1221,7 @@
                 </div>
             </div>
               <div class="form-check mt-3">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked formControlName="isCurrentWorking">
+                <input class="form-check-input" type="checkbox" formControlName="isCurrentWorking">
                 <label class="form-check-label text-dark" for="flexCheckChecked">
                   I am currently working on this
                 </label>
@@ -1209,7 +1229,7 @@
               <div class="col-md-12 p2-1 mt-3 pe-4">
                 <label class="form-label text-dark">Description</label>
                 <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
-                    (keyup)="charactersCount($event)" maxlength="500" formControl="descriptionWorkSample">
+                    (keyup)="charactersCount($event)" maxlength="500" formControlName="descriptionWorkSample">
             </textarea>
                 <p class="text-end">
                     <small class="text-muted">500 Character(s) Left</small>
@@ -1220,9 +1240,14 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+        <button type="button" *ngIf="workSampleData.userId == 0" class="btn btn-primary-c" 
+        (click)="createWorkSampleData()">Save</button>
+        <button type="button" *ngIf="workSampleData.userId > 0" class="btn btn-primary-c" 
+        (click)="updateWorkSampleData()">Update</button>
+        
     </div>
 </ng-template>
+
 
 <!-- Modal :- Research Publication-->
 <ng-template #ResearchPublicationModal let-modal>
@@ -1230,22 +1255,75 @@
         <h4 class="modal-title text-dark" id="ResearchPublicationModal-basic-title">White Paper / Research Publication / Journal Entry</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-        <form>
-            <div class="col-md-12 mb-3">
-                <label class="form-label text-dark">Current Industry*</label>
-                <input class="form-control" type="text">
+    <div class="mt-1 px-5">
+        <p>
+            Add links to your online publications
+        </p>
+    </div>
+    <div class="modal-body px-5 mt-0 py-2">
+        <form [formGroup]="researchPublicationForm" >
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Title*</label>
+                <input class="form-control" type="text" placeholder="Title" formControlName="titleResearchPublication">
             </div>
             <div class="col-md-12 py-2 mt-2 pe-4">
-                <label class="form-label text-dark">Department</label>
-                <input class="form-control" type="text" placeholder="">
+                <label class="form-label text-dark">URL</label>
+                <input class="form-control" type="text" placeholder="URL" formControlName="urlResearchPublication">
+            </div>
+            
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Publication On</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Year</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Month</label>
+                </div>
+                
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="yearPublicationOn" >
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="monthPublicationOn" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Description</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    (keyup)="charactersCount($event)" maxlength="500" formControlName="descriptionResearchPublication">
+            </textarea>
+                <p class="text-end">
+                    <small class="text-muted">500 Character(s) Left</small>
+                </p>
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+        <button type="button" *ngIf = "researchPublicationData.userId == 0" class="btn btn-primary-c" 
+        (click)= "createResearchPublication()" >Save</button>
+        <button type="button" *ngIf = "researchPublicationData.userId > 0" class="btn btn-primary-c" 
+            (click)= "updateResearchPublication()" >Update</button>
     </div>
 </ng-template>
 
@@ -1255,22 +1333,39 @@
         <h4 class="modal-title text-dark" id="PresentationModal-basic-title">Presentation</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-        <form>
-            <div class="col-md-12 mb-3">
-                <label class="form-label text-dark">Current Industry*</label>
-                <input class="form-control" type="text">
+    <div class="mt-1 px-5">
+        <p>
+            Add links to your online presentation (e.g. Slideshare presentation links etc.)
+        </p>
+    </div>
+    <div class="modal-body px-5 mt-0 py-2">
+        <form [formGroup]="presentationForm">
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Presentation Title*</label>
+                <input class="form-control" type="text" placeholder="Title" formControlName="presentationTitle">
             </div>
             <div class="col-md-12 py-2 mt-2 pe-4">
-                <label class="form-label text-dark">Department</label>
-                <input class="form-control" type="text" placeholder="">
+                <label class="form-label text-dark">URL</label>
+                <input class="form-control" type="text" placeholder="URL" formControlName="urlPresentation">
+            </div>
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Description</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    (keyup)="charactersCount($event)" maxlength="500" formControlName="descriptionPresentation">
+            </textarea>
+                <p class="text-end">
+                    <small class="text-muted">500 Character(s) Left</small>
+                </p>
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+        <button type="button" *ngIf="presentationData.userId == 0 " class="btn btn-primary-c" 
+        (click)="createPresentation()">Save</button>
+        <button type="button" *ngIf="presentationData.userId > 0" class="btn btn-primary-c" 
+            (click)="updatePresentation()">Update</button>
     </div>
 </ng-template>
 

@@ -27,6 +27,8 @@ export class UserprofileComponent implements OnInit {
   addProfileSummaryForm:FormGroup;
   onlineProfileForm:FormGroup;
   workSampleForm: FormGroup;
+  researchPublicationForm: FormGroup;
+  presentationForm: FormGroup;
   keySkillData:keySkill = new keySkill();
   keySkillId: number=0;
   keySkillDataArr: Array <keySkill> = [];
@@ -48,6 +50,14 @@ export class UserprofileComponent implements OnInit {
   onlineProfileId: number=0;
   onlineProfileDataArr: Array<OnlineProfile> = [];
   workSampleData: WorkSample = new WorkSample();
+  workSampleId: number=0;
+  workSampleDataArr: Array<WorkSample> = [];
+  researchPublicationData: ResearchPublication = new ResearchPublication();
+  researchPublicationId: number = 0;
+  researchPublicationDataArr: Array<ResearchPublication> = [];
+  presentationData: Presentation = new Presentation();
+  presentationId: number = 0;
+  presentationDataArr: Array<Presentation> = [];
   isServingNoticePeriod: boolean=false;
   education: autoCompleteModal = null;
   course: autoCompleteModal=null;
@@ -79,7 +89,7 @@ export class UserprofileComponent implements OnInit {
               private http:AjaxService,
               private nav:iNavigation) { }
   
-  private keySkillModalReference; 
+  private keySkillModalReference;
   private emloymentModalReference;
    private educationModalReference;
    private itSkillsModalReference;
@@ -88,7 +98,7 @@ export class UserprofileComponent implements OnInit {
    private onlineProfileReference;
    private workSampleReference;
    private researchPublicationReference;
-   private presentationReferenc;
+   private presentationReference;
    private patentReference;
    private certificationReference;
    private careerProfileReference;
@@ -210,7 +220,7 @@ export class UserprofileComponent implements OnInit {
     this.http.post("ItSkills/addItSkill", value).then(Response =>{
       if(Response.responseBody){
         this.itSkillsData=Response.responseBody;
-        Toast("Record inserted");
+        Toast("Record inserted"); 
       }
     })
   }
@@ -244,7 +254,36 @@ export class UserprofileComponent implements OnInit {
         Toast("Record inserted")
       }
     })
+  }
 
+  createWorkSampleData(){
+    let value = this.workSampleForm.value;
+    this.http.post("WorkSample/addWorkSample", value).then(Response => {
+      if(Response.responseBody){
+        this.workSampleData = Response.responseBody;
+        Toast("Record inserted")
+      }
+    })
+  }
+
+  createResearchPublication(){
+    let value = this.researchPublicationForm.value;
+    this.http.post("ResearchPublication/addResearchPublication", value).then(Response => {
+      if(Response.responseBody){
+        this.researchPublicationData = Response.responseBody;
+        Toast("Record inserted")
+      }
+    })
+  }
+
+  createPresentation(){
+    let value = this.presentationForm.value;
+    this.http.post("Presentation/addPresentation", value).then(Response => {
+      if(Response.responseBody){
+        this.presentationData = Response.responseBody;
+        Toast("Record inserted")
+      }
+    })
   }
 
 
@@ -331,6 +370,9 @@ export class UserprofileComponent implements OnInit {
           this.ItSkillsDataArr = Response.responseBody.itSkillsResult;
           this.profileSummaryDataArr = Response.responseBody.profileSummaryResult;
           this.onlineProfileDataArr = Response.responseBody.onlineProfileResult;
+          this.workSampleDataArr = Response.responseBody.workSampleResult;
+          this.researchPublicationDataArr = Response.responseBody.researchPublicationResult;
+          this.presentationDataArr = Response.responseBody.presentationResult;
           this.initAddKeySkillForm();
           this.initAddEmploymentForm();
           this.initAddEducationForm();
@@ -338,6 +380,9 @@ export class UserprofileComponent implements OnInit {
           this.initAddItSkillForm();
           this.initAddProfileSummaryForm();
           this.initOnlineProfileForm();
+          this.initWorkSampleForm();
+          this.initResearchPublicationForm();
+          this.initPresentationForm();
           this.isPageReady = true;
         }
       })
@@ -463,6 +508,39 @@ updateOnlineProfileData(){
   })
 }
 
+updateWorkSampleData(){
+  let value = this.workSampleForm.value;
+  this.http.put(`WorkSample/updateWorkSample/${this.workSampleId}`, value).then(res =>{
+    if(res.responseBody){
+      this.workSampleData = res.responseBody;
+      console.log(this.workSampleData);
+      this.initWorkSampleForm();
+    }
+  })
+}
+
+updateResearchPublication(){
+  let value = this.researchPublicationForm.value;
+  this.http.put(`ResearchPublication/updateResearchPublication/${this.researchPublicationId}`, value).then(res =>{
+    if(res.responseBody){
+      this.researchPublicationData = res.responseBody;
+      console.log(this.researchPublicationData);
+      this.initResearchPublicationForm();
+    }
+  })
+}
+
+updatePresentation(){
+  let value = this.presentationForm.value;
+  this.http.put(`Presentation/updatePresentation/${this.presentationId}`, value).then(res =>{
+    if(res.responseBody){
+      this.presentationData = res.responseBody;
+      console.log(this.presentationData);
+      this.initPresentationForm();
+    }
+  })
+}
+
 addKeySkill(e: any) {
   let value = e.target.value;
   if (value) {
@@ -534,6 +612,37 @@ charactersCount(e: any) {
     }
   }
 
+  workSampleUpdatePopUp(item: WorkSample, content: any){
+    if(item != null){
+      this.userId = item.userId;
+      this.workSampleId = item.workSampleId;
+      this.workSampleData= item;
+      this.initWorkSampleForm();
+      this.workSampleReference = this.modalService.open(content,{size: 'lg'});
+    }
+  }
+
+  researchPublicationUpdatePopUp(item: ResearchPublication, content: any){
+    if(item != null){
+      this.userId = item.userId;
+      this.researchPublicationId = item.researchPublicationId;
+      this.researchPublicationData = item;
+      this.initResearchPublicationForm();
+      this.researchPublicationReference = this.modalService.open(content, {size: 'lg'});
+    }
+  }
+
+  presentationUpdatePopUp(item: Presentation, content: any){
+    if(item != null){
+      this.userId = item.userId;
+      this.presentationId = item.presentationId;
+      this.presentationData = item;
+      this.initPresentationForm();
+      this.presentationReference = this.modalService.open(content, {size: 'lg'});
+    }
+  }
+
+
   changeNoticePeriod(e: any){
     let value = e.target.value;
     if(value=='0')
@@ -599,7 +708,7 @@ charactersCount(e: any) {
   }
 
   presentationPopUp(content){
-    this.presentationReferenc = this.modalService.open(content,{size: 'lg'});
+    this.presentationReference = this.modalService.open(content,{size: 'lg'});
   }
 
   patentPopUp(content){
@@ -752,7 +861,28 @@ charactersCount(e: any) {
       monthDurationTo: new FormControl(this.workSampleData.monthDurationTo),
       isCurrentWorking: new FormControl(this.workSampleData.isCurrentWorking),
       descriptionWorkSample: new FormControl(this.workSampleData.descriptionWorkSample)
+    })
+  }
 
+  initResearchPublicationForm(){
+    this.researchPublicationForm = this.fb.group({
+      researchPublicationId: new FormControl(this.researchPublicationData.researchPublicationId),
+      userId: new FormControl(this.researchPublicationData.researchPublicationId),
+      titleResearchPublication: new FormControl(this.researchPublicationData.titleResearchPublication),
+      urlResearchPublication: new FormControl(this.researchPublicationData.urlResearchPublication),
+      yearPublicationOn: new FormControl(this.researchPublicationData.yearPublicationOn),
+      monthPublicationOn: new FormControl(this.researchPublicationData.monthPublicationOn),
+      descriptionResearchPublication: new FormControl(this.researchPublicationData.descriptionResearchPublication)
+    })
+  }
+
+  initPresentationForm(){
+    this.presentationForm = this.fb.group({
+      presentationId: new FormControl(this.presentationData.presentationId),
+      userId: new FormControl(this.presentationData.userId),
+      presentationTitle: new FormControl(this.presentationData.presentationTitle),
+      urlPresentation: new FormControl(this.presentationData.urlPresentation),
+      descriptionPresentation: new FormControl(this.presentationData.descriptionPresentation)
     })
 
   }
@@ -862,4 +992,23 @@ class WorkSample{
   isCurrentWorking: boolean = false;
   descriptionWorkSample: String = '';
 
+}
+
+class ResearchPublication{
+  researchPublicationId: number = 0;
+  userId: number = 0;
+  titleResearchPublication: String = '';
+  urlResearchPublication: string = '';
+  yearPublicationOn: number = 0;
+  monthPublicationOn: String = '';
+  descriptionResearchPublication: String = '';
+
+}
+
+class Presentation{
+  presentationId: number = 0;
+  userId: number = 0;
+  presentationTitle: String = '';
+  urlPresentation: String = '';
+  descriptionPresentation: String = '';
 }
