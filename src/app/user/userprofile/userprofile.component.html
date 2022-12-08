@@ -273,11 +273,11 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <p class="mb-0">Add link to your Online publications. </p>
+                <p class="mb-0"> Add link to your Online publications. </p>
                 <hr>
                 <div class="d-flex justify-content-between">
-                    <h6 class="text-dark">Presentation </h6>
-                    <a href="javascript:void(0)" (click)="presentationPopUp(PresentationModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
+                    <h6 class="text-dark"> Presentation </h6>
+                    <a href="javascript:void(0)" (click)="presentationPopUp(PresentationModal)" class="presentationadd text-decoration-none text-primary-c">ADD </a>
                 </div>
                 <ng-container *ngIf="presentationDataArr.length > 0">
                     <ng-container *ngFor="let item of presentationDataArr">
@@ -288,9 +288,15 @@
                 <p class="mb-0">Add link to your Online presentations (e.g. Slideshare presentation links etc) </p>
                 <hr>
                 <div class="d-flex justify-content-between">
-                    <h6 class="text-dark">Patent </h6>
+                    <h6 class="text-dark"> Patent </h6>
                     <a href="javascript:void(0)" (click)="patentPopUp(PatentModal)" class="accomplishmentsadd text-decoration-none text-primary-c">ADD </a>
                 </div>
+                <ng-container *ngIf="patentDataArr.length > 0 " >
+                    <ng-container *ngFor="let item of patentDataArr" >
+                        <div> {{item.patentTitle}} <a href="javascript:void(0)" class="text-decoration-none"
+                            (click)="patentUpdatePopUp(item, PatentModal)" > <i class="fa fa-pencil"></i> </a> </div>
+                    </ng-container>
+                </ng-container>
                 <p class="mb-0">Add details of Patents you have filed. </p>
                 <hr>
                 <div class="d-flex justify-content-between">
@@ -1136,9 +1142,9 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" *ngIf="onlineProfileData.userId == 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf="onlineProfileData.onlineProfileId == 0" class="btn btn-primary-c" 
         (click)="createOnlineProfileData()">Save</button>
-        <button type="button" *ngIf="onlineProfileData.userId > 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf="onlineProfileData.onlineProfileId > 0" class="btn btn-primary-c" 
         (click)="updateOnlineProfileData()">Update</button>
     </div>
 </ng-template>
@@ -1240,9 +1246,9 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" *ngIf="workSampleData.userId == 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf="workSampleData.workSampleId == 0" class="btn btn-primary-c" 
         (click)="createWorkSampleData()">Save</button>
-        <button type="button" *ngIf="workSampleData.userId > 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf="workSampleData.workSampleId > 0" class="btn btn-primary-c" 
         (click)="updateWorkSampleData()">Update</button>
         
     </div>
@@ -1320,9 +1326,9 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" *ngIf = "researchPublicationData.userId == 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf = "researchPublicationData.researchPublicationId == 0" class="btn btn-primary-c" 
         (click)= "createResearchPublication()" >Save</button>
-        <button type="button" *ngIf = "researchPublicationData.userId > 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf = "researchPublicationData.researchPublicationId > 0" class="btn btn-primary-c" 
             (click)= "updateResearchPublication()" >Update</button>
     </div>
 </ng-template>
@@ -1362,9 +1368,9 @@
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" *ngIf="presentationData.userId == 0 " class="btn btn-primary-c" 
+        <button type="button" *ngIf="presentationData.presentationId == 0 " class="btn btn-primary-c" 
         (click)="createPresentation()">Save</button>
-        <button type="button" *ngIf="presentationData.userId > 0" class="btn btn-primary-c" 
+        <button type="button" *ngIf="presentationData.presentationId > 0" class="btn btn-primary-c" 
             (click)="updatePresentation()">Update</button>
     </div>
 </ng-template>
@@ -1375,41 +1381,203 @@
         <h4 class="modal-title text-dark" id="PatentModal-basic-title">Patent</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
-    <div class="modal-body">
-        <form>
-            <div class="col-md-12 mb-3">
-                <label class="form-label text-dark">Current Industry*</label>
-                <input class="form-control" type="text">
+    <div class="mt-1 px-5">
+        <p>
+            Add details of Patents you have filed..
+        </p>
+    </div>
+    
+    <div class="modal-body px-5 mt-0 py-2">
+        <form [formGroup]="patentForm">
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Patent Title*</label>
+                <input class="form-control" type="text" placeholder="Enter Patent Title" formControlName="patentTitle">
             </div>
             <div class="col-md-12 py-2 mt-2 pe-4">
-                <label class="form-label text-dark">Department</label>
-                <input class="form-control" type="text" placeholder="">
+                <label class="form-label text-dark">URL</label>
+                <input class="form-control" type="text" placeholder="Enter Patent URL" formControlName="urlPatent">
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Patent Office</label>
+                <input class="form-control" type="text" placeholder="Enter Patent Office" formControlName="patentOffice">
+            </div>
+            <div class="col-md-12 mt-3 text-dark">
+                <div>
+                    <label class="form-label text-dark" for="">Status</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="patentStatus" id="inlineRadio1" value="true"
+                        formControlName="patentStatus">
+                    <label class="form-check-label" for="inlineRadio1">Patent Issued</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="patentStatus" id="inlineRadio2" value="false"
+                        formControlName="patentStatus">
+                    <label class="form-check-label" for="inlineRadio2">Patent Pending</label>
+                </div>
+            </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Application Number</label>
+                <input class="form-control" type="text" placeholder="Enter Application Number" formControlName="patentApplicationNumber">
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Issue Date</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Year</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Month</label>
+                </div>
+                
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="yearIssueDate" >
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="monthIssueDate" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12 p2-1 mt-3 pe-4">
+                <label class="form-label text-dark">Description</label>
+                <textarea name="" id="" class="form-control" cols="30" rows="6" placeholder="Type here..."
+                    (keyup)="charactersCount($event)" maxlength="500" formControlName="descriptionPatent">
+            </textarea>
+                <p class="text-end">
+                    <small class="text-muted">500 Character(s) Left</small>
+                </p>
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <a href="javascript:void(0)" class="text-decoration-none fs-6 px-2"
             (click)="modal.close('Save click')">Cancel</a>
-        <button type="button" class="btn btn-primary-c" (click)="modal.close('Save click')">Save</button>
+        <button type="button" *ngIf="patentData.patentId == 0 " class="btn btn-primary-c" 
+        (click)="createPatent()">Save</button>
+        <button type="button" *ngIf="patentData.patentId > 0 " class="btn btn-primary-c" 
+        (click)="updatePatent()">Update</button>
     </div>
 </ng-template>
 
 <!-- Modal :- Certification-->
 <ng-template #CertificationModal let-modal>
     <div class="modal-header">
-        <h4 class="modal-title text-dark" id="CertificationModal-basic-title">Patent</h4>
+        <h4 class="modal-title text-dark" id="CertificationModal-basic-title">Certification</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
-        <form>
+        <form formGroup="certificationForm">
             <div class="col-md-12 mb-3">
-                <label class="form-label text-dark">Current Industry*</label>
-                <input class="form-control" type="text">
+                <label class="form-label text-dark">Certification Name*</label>
+                <input class="form-control" type="text" placeholder="please enter your certification name" formControlName="certificationName">
             </div>
             <div class="col-md-12 py-2 mt-2 pe-4">
-                <label class="form-label text-dark">Department</label>
-                <input class="form-control" type="text" placeholder="">
+                <label class="form-label text-dark">Certification Completion ID</label>
+                <input class="form-control" type="text" placeholder="Please mention your course completion ID" formControlName="certificationCompletionId">
             </div>
+            <div class="col-md-12 py-2 mt-2 pe-4">
+                <label class="form-label text-dark">Certification URL</label>
+                <input class="form-control" type="text" placeholder="please mention your completion URL" formControlName="certificationUrl" >
+            </div>
+
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">Certification Validity</label>
+                </div>
+                <div>
+                    <label class="form-label text-dark">From</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Year</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Month</label>
+                </div>
+                
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="yearCrtificationFrom" >
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="monthCertificationFrom" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 row mt-3">
+                <div>
+                    <label class="form-label text-dark">To</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Year</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-dark">Month</label>
+                </div>
+                
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="yearCrtificationTo" >
+                        <option value=""> in Years..</option>
+                        <option [value]="item" *ngFor="let item of workedTillYrs">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control text-muted" formControlName="monthCertificationTo" >
+                        <option value="">Select Month..</option>
+                        <option value="Jan">Jan</option>
+                        <option value="Feb">Feb</option>
+                        <option value="Mar">Mar</option>
+                        <option value="Apr">Apr</option>
+                        <option value="May">May</option>
+                        <option value="Jun">Jun</option>
+                        <option value="Jul">Jul</option>
+                        <option value="Aug">Aug</option>
+                        <option value="Sep">Sep</option>
+                        <option value="Oct">Oct</option>
+                        <option value="Nov">Nov</option>
+                        <option value="Dec">Dec</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" formControlName="isCertificationNotExpire">
+                <label class="form-check-label text-dark" for="flexCheckChecked">
+                  This certification does not expire
+                </label>
+              </div>
+
         </form>
     </div>
     <div class="modal-footer">

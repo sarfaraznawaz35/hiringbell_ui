@@ -29,6 +29,8 @@ export class UserprofileComponent implements OnInit {
   workSampleForm: FormGroup;
   researchPublicationForm: FormGroup;
   presentationForm: FormGroup;
+  patentForm: FormGroup;
+  certificationForm: FormGroup;
   keySkillData:keySkill = new keySkill();
   keySkillId: number=0;
   keySkillDataArr: Array <keySkill> = [];
@@ -58,6 +60,11 @@ export class UserprofileComponent implements OnInit {
   presentationData: Presentation = new Presentation();
   presentationId: number = 0;
   presentationDataArr: Array<Presentation> = [];
+  patentData: Patent = new Patent();
+  patentId: number = 0;
+  patentDataArr: Array<Patent> = [];
+  certificationData: Certification = new Certification();
+  certificationDataArr: Array<Certification> = [];
   isServingNoticePeriod: boolean=false;
   education: autoCompleteModal = null;
   course: autoCompleteModal=null;
@@ -281,7 +288,17 @@ export class UserprofileComponent implements OnInit {
     this.http.post("Presentation/addPresentation", value).then(Response => {
       if(Response.responseBody){
         this.presentationData = Response.responseBody;
-        Toast("Record inserted")
+        Toast("Record inserted in Presentation")
+      }
+    })
+  }
+
+  createPatent(){
+    let value = this.patentForm.value;
+    this.http.post("Patent/addPatent", value).then(Response => {
+      if(Response.responseBody){
+        this.patentData = Response.responseBody;
+        Toast("Record inserted in Patent")
       }
     })
   }
@@ -373,6 +390,7 @@ export class UserprofileComponent implements OnInit {
           this.workSampleDataArr = Response.responseBody.workSampleResult;
           this.researchPublicationDataArr = Response.responseBody.researchPublicationResult;
           this.presentationDataArr = Response.responseBody.presentationResult;
+          this.patentDataArr = Response.responseBody.patentResult;
           this.initAddKeySkillForm();
           this.initAddEmploymentForm();
           this.initAddEducationForm();
@@ -383,6 +401,7 @@ export class UserprofileComponent implements OnInit {
           this.initWorkSampleForm();
           this.initResearchPublicationForm();
           this.initPresentationForm();
+          this.initPatentForm();
           this.isPageReady = true;
         }
       })
@@ -541,6 +560,17 @@ updatePresentation(){
   })
 }
 
+updatePatent(){
+  let value = this.patentForm.value;
+  this.http.put(`Patent/updatePatent/${this.patentId}`, value).then(res => {
+    if(res.responseBody){
+      this.patentData = res.responseBody;
+      console.log(this.patentData);
+      this.initPatentForm();
+    }
+  })
+}
+
 addKeySkill(e: any) {
   let value = e.target.value;
   if (value) {
@@ -642,6 +672,16 @@ charactersCount(e: any) {
     }
   }
 
+  patentUpdatePopUp(item: Patent, content: any){
+    if(item != null){
+      this.userId = item.userId;
+      this.patentId = item.patentId;
+      this.patentData = item;
+      this.initPatentForm();
+      this.patentReference = this.modalService.open(content,{size: 'lg'});
+    }
+  }
+
 
   changeNoticePeriod(e: any){
     let value = e.target.value;
@@ -696,22 +736,32 @@ charactersCount(e: any) {
   }
 
   onlineProfilePopUp(content){
+    this.onlineProfileData = new OnlineProfile();
+    this.initOnlineProfileForm();
     this.onlineProfileReference = this.modalService.open(content,{size: 'lg'});
   }
 
   workSamplePopUp(content){
+    this.workSampleData = new WorkSample();
+    this.initWorkSampleForm();
     this.workSampleReference = this.modalService.open(content,{size: 'lg'});
   }
 
   researchPublicationPopUp(content){
+    this.researchPublicationData = new ResearchPublication();
+    this.initResearchPublicationForm();
     this.researchPublicationReference = this.modalService.open(content,{size: 'lg'});
   }
 
   presentationPopUp(content){
+    this.presentationData = new Presentation();
+    this.initPresentationForm();
     this.presentationReference = this.modalService.open(content,{size: 'lg'});
   }
 
   patentPopUp(content){
+    this.patentData = new Patent();
+    this.initPatentForm();
     this.patentReference = this.modalService.open(content,{size: 'lg'});
   }
 
@@ -842,7 +892,7 @@ charactersCount(e: any) {
   initOnlineProfileForm(){
     this.onlineProfileForm = this.fb.group({
       onlineProfileId: new FormControl(this.onlineProfileData.onlineProfileId),
-      userId: new FormControl(this.onlineProfileData.userId),
+      userId: new FormControl(this.userId),
       socialProfile: new FormControl(this.onlineProfileData.socialProfile),
       url: new FormControl(this.onlineProfileData.url),
       description: new FormControl(this.onlineProfileData.description)
@@ -852,7 +902,7 @@ charactersCount(e: any) {
   initWorkSampleForm(){
     this.workSampleForm = this.fb.group({
       workSampleId: new FormControl(this.workSampleData.workSampleId),
-      userId: new FormControl(this.workSampleData.userId),
+      userId: new FormControl(this.userId),
       workTitle: new FormControl(this.workSampleData.workTitle),
       urlWorkSample: new FormControl(this.workSampleData.urlWorkSample),
       yearDurationFrom: new FormControl(this.workSampleData.yearDurationFrom),
@@ -867,7 +917,7 @@ charactersCount(e: any) {
   initResearchPublicationForm(){
     this.researchPublicationForm = this.fb.group({
       researchPublicationId: new FormControl(this.researchPublicationData.researchPublicationId),
-      userId: new FormControl(this.researchPublicationData.researchPublicationId),
+      userId: new FormControl(this.userId),
       titleResearchPublication: new FormControl(this.researchPublicationData.titleResearchPublication),
       urlResearchPublication: new FormControl(this.researchPublicationData.urlResearchPublication),
       yearPublicationOn: new FormControl(this.researchPublicationData.yearPublicationOn),
@@ -879,12 +929,44 @@ charactersCount(e: any) {
   initPresentationForm(){
     this.presentationForm = this.fb.group({
       presentationId: new FormControl(this.presentationData.presentationId),
-      userId: new FormControl(this.presentationData.userId),
+      userId: new FormControl(this.userId),
       presentationTitle: new FormControl(this.presentationData.presentationTitle),
       urlPresentation: new FormControl(this.presentationData.urlPresentation),
       descriptionPresentation: new FormControl(this.presentationData.descriptionPresentation)
     })
 
+  }
+
+  initPatentForm(){
+    this.patentForm = this.fb.group({
+      patentId: new FormControl(this.patentData.patentId),
+      userId: new FormControl(this.userId),
+      patentTitle: new FormControl(this.patentData.patentTitle),
+      urlPatent: new FormControl(this.patentData.urlPatent),
+      patentOffice: new FormControl(this.patentData.patentOffice),
+      patentStatus: new FormControl(this.patentData.patentStatus),
+      patentApplicationNumber: new FormControl(this.patentData.patentApplicationNumber),
+      yearIssueDate: new FormControl(this.patentData.yearIssueDate),
+      monthIssueDate: new FormControl(this.patentData.monthIssueDate),
+      descriptionPatent: new FormControl(this.patentData.descriptionPatent)
+
+    })
+  }
+
+  initCertificationForm(){
+    this.certificationForm = this.fb.group({
+      certificationId: new FormControl(this.certificationData.certificationId),
+      userId: new FormControl(this.userId),
+      certificationName: new FormControl(this.certificationData.certificationName),
+      certificationCompletionId: new FormControl(this.certificationData.certificationCompletionId),
+      certificationUrl: new FormControl(this.certificationData.certificationUrl),
+      yearCrtificationFrom: new FormControl(this.certificationData.yearCrtificationFrom),
+      monthCertificationFrom: new FormControl(this.certificationData.monthCertificationFrom),
+      yearCrtificationTo: new FormControl(this.certificationData.yearCrtificationTo),
+      monthCertificationTo: new FormControl(this.certificationData.monthCertificationTo),
+      isCertificationNotExpire: new FormControl(this.certificationData.isCertificationNotExpire)
+
+    })
   }
 
 }
@@ -1011,4 +1093,32 @@ class Presentation{
   presentationTitle: String = '';
   urlPresentation: String = '';
   descriptionPresentation: String = '';
+}
+
+class Patent{
+  patentId: number = 0;
+  userId: number = 0;
+  patentTitle: String = '';
+  urlPatent: String = '';
+  patentOffice: String = '';
+  patentStatus: boolean = null;
+  patentApplicationNumber: String = '';
+  yearIssueDate: number = 0;
+  monthIssueDate: String = '';
+  descriptionPatent: String = '';
+
+}
+
+class Certification{
+  certificationId: number = 0;
+  userId: number = 0;
+  certificationName: String = '';
+  certificationCompletionId: String = '';
+  certificationUrl: String = '';
+  yearCrtificationFrom: number = 0;
+  monthCertificationFrom: String = '';
+  yearCrtificationTo: number = 0;
+  monthCertificationTo: String = '';
+  isCertificationNotExpire: boolean = true;
+
 }
